@@ -3,12 +3,17 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 
+import { NgxSvgModule } from 'ngx-svg';
+import { DrawComponent } from './draw/draw.component';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DrawComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    NgxSvgModule
   ],
   providers: [],
   bootstrap: [AppComponent]
