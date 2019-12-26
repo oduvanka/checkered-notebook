@@ -7,14 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DrawComponent implements OnInit {
 
-  private pointsPolyline: Array<number[]>;
-  private pointsPolygone: Array<number[]>;
+  private pointsPolyline;
+  private pointsPolygone;
+  private text: string;
 
   constructor() { }
 
   ngOnInit() {
-    this.pointsPolyline = [[50, 50], [60, 80], [90, 75], [100, 70], [110, 85]];
-    this.pointsPolygone = [[0, 50], [50, 100], [100, 50], [50, 0]];
+    this.pointsPolyline = [[200,200], [250,125], [250,175], [300,100]];
+    this.pointsPolygone = [[400,100], [450,150], [500,100], [450,50]];
+    this.text = "&!"
   }
 
   onClick(evt) {

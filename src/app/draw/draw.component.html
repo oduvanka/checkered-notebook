@@ -9,7 +9,7 @@
   <li>(?) Polygon</li>
   <!--<li>Image</li>
   <li>Path</li>-->
-  <li>Text</li>
+  <li>Text!</li>
 </ol>
 
 <svg-container 
@@ -29,14 +29,14 @@
 
   <svg-ellipse width="100" height="25" color="pink" x="160" y="60"></svg-ellipse>
 
-  <svg-polyline points="pointsPolyline" borderSize="3" borderColor="grey" fill="lightgrey"></svg-polyline>
+  <svg-polyline [points]="pointsPolyline" borderSize="3" borderColor="grey" fill="lightgrey"></svg-polyline>
 
-  <svg-polygon points="pointsPolygone" borderSize="3" borderColor="red"></svg-polygon>
+  <svg-polygon [points]="pointsPolygone" borderSize="3" borderColor="red"></svg-polygon>
 
   <!--<svg-image></svg-image>
 
   <svg-path></svg-path>-->
 
-  <svg-text text="?!" color="green" x="200" y="200" size="48"></svg-text>
+  <svg-text [text]="text" color="green" x="200" y="200" size="48"></svg-text>
 
 </svg-container>
