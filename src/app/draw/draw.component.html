@@ -1,42 +1,39 @@
 <p>draw works!</p>
 
-<ol>
-  <li>Line</li>
-  <li>Rectangular</li>
-  <li>Circle</li>
-  <li>Ellipse</li>
-  <li>(?) Polyline</li>
-  <li>(?) Polygon</li>
-  <!--<li>Image</li>
-  <li>Path</li>-->
-  <li>Text!</li>
-</ol>
-
 <svg-container 
   containerId="svg-element"
-  height="300"
-  showGrid="true"
-  hoverable="true"
-  pointSize="5"
+  [height]="height" 
+  [showGrid]="isShowGrid"
+  [hoverable]="isHoverable"
+  [pointSize]="sizePoint"
   (clickEvent)="onClick($event)"
 >
 
-  <svg-line borderSize="3" borderColor="blue" x0="15" y0="15" x1="30" y1="90"></svg-line>
+  <svg-circle 
+    [radius]="rCircle" 
+    [x]="xCircle" [y]="yCircle" 
+    [color]="bgColorCircle" 
+    (clickEvent)="onClickEl($event)" >
+  </svg-circle>
 
-  <svg-rect width="50" height="50" color="lightblue" x="95" y="15"></svg-rect>
+  <svg-polygon 
+    [points]="pointsPolygone" 
+    [fill]="fill" 
+    [borderSize]="borderSize" 
+    [borderColor]="borderColorPolygone" >
+  </svg-polygon>
 
-  <svg-circle radius="80" color="#0055BBCC" x="60" y="60"></svg-circle>
+  <svg-polyline 
+    [points]="pointsPolyline" 
+    [fill]="fill" 
+    [borderSize]="borderSize" 
+    [borderColor]="borderColorPolyline" >
+  </svg-polyline>
 
-  <svg-ellipse width="100" height="25" color="pink" x="160" y="60"></svg-ellipse>
-
-  <svg-polyline [points]="pointsPolyline" borderSize="3" borderColor="grey" fill="lightgrey"></svg-polyline>
-
-  <svg-polygon [points]="pointsPolygone" borderSize="3" borderColor="red"></svg-polygon>
-
-  <!--<svg-image></svg-image>
-
-  <svg-path></svg-path>-->
-
-  <svg-text [text]="text" color="green" x="200" y="200" size="48"></svg-text>
+  <svg-text 
+    [text]="text" 
+    [x]="xText" [y]="yText" 
+    [size]="sizeText" [color]="colorText" >
+  </svg-text>
 
 </svg-container>
