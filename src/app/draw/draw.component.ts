@@ -13,20 +13,13 @@ export class DrawComponent implements OnInit {
   private sizePoint: number;
 
   private rCircle: number;
+  public myClasses: string[];
   private sizeText: number;
   private colorText: string;
 
-  private pointsPolyline: Array<Array<number>>;
-  private pointsPolygone: Array<Array<number>>;
-
-  private fill: string;
   private borderSize: number;
 
-  private borderColorPolygone: string;
-  private borderColorPolyline: string;
-
   private dataPoints: Object[];
-  private dataPolygons: Object[];
   private points: Object[];
   private polygons: Object[];
 
@@ -39,6 +32,7 @@ export class DrawComponent implements OnInit {
     this.sizePoint = 5;  
     
     this.rCircle = 20;
+    this.myClasses = ['test1'];
     this.sizeText = 8;
     this.colorText = "grey";
 
@@ -76,7 +70,21 @@ export class DrawComponent implements OnInit {
   }
 
   onClickEl(evt) {
-    console.log("click el! ", evt);
+    console.log("click to el ", evt);
+  }
+
+  onMouseOverEl(evt) {
+    console.log("mouse over to the el ", evt);
+    const el = evt.target;
+    /*el.style.stroke="black"
+    el.style.strokeWidth="1"*/
+  }
+
+  onMouseOutEl(evt) {
+    console.log("mouse out to the el ", evt);
+    const el = evt.target;
+    /*el.style.stroke="none"
+    el.style.strokeWidth="none"*/
   }
 
 }

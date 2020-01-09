@@ -22,8 +22,12 @@
     [radius]="rCircle" 
     x={{item.circle.x}} y={{item.circle.y}} 
     color={{item.circle.color}} 
-    (clickEvent)="onClickEl($event)" >
+    [classes]="myClasses"
+    (clickEvent)="onClickEl($event)" 
+    (mouseOverEvent)="onMouseOverEl($event)" 
+    (mouseOutEvent)="onMouseOutEl($event)" >
   </svg-circle>
+
   <svg-text 
     *ngFor="let item of points" 
     text={{item.label.text}} 
@@ -33,3 +37,7 @@
 
 </svg-container>
 
+<svg>
+  <circle class="test1 test2" cx="40" cy="40" r="10" stroke="#006600" fill="#00cc00" />
+  <circle class="test2" cx="40" cy="80" r="10" stroke="#660000" fill="#cc0000" />
+</svg>
