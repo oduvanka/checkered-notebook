@@ -25,8 +25,10 @@ export class DrawComponent implements OnInit {
   private borderColorPolygone: string;
   private borderColorPolyline: string;
 
-  private data: Object[];
+  private dataPoints: Object[];
+  private dataPolygons: Object[];
   private points: Object[];
+  private polygons: Object[];
 
   constructor( private _dataService: DataService ) { }
 
@@ -36,14 +38,15 @@ export class DrawComponent implements OnInit {
     this.isHoverable = true;
     this.sizePoint = 5;  
     
-    this.rCircle = 10;
+    this.rCircle = 20;
     this.sizeText = 8;
     this.colorText = "grey";
-    
-    this.data = this._dataService.getData();
-    this.points = [];
 
-    this.data.map((item) => {
+    this.borderSize = 1;
+    
+    this.dataPoints = this._dataService.getDataPoints();
+    this.points = [];
+    this.dataPoints.map((item) => {
       const id = item['id'];
       const point = item['coords'];
       const xPoint = point['x'];
@@ -63,17 +66,9 @@ export class DrawComponent implements OnInit {
         circle: { x: xCircle, y: yCircle, color: bgColorCircle },
         label: {text, x: xText, y: yText }
       });
-    }); 
+    });
 
-    this.pointsPolyline = [[380,100], [420,220], [540,260], [580,140]];
-    
-    this.pointsPolygone = [[400,100], [450,150], [500,100], [450,50]];
-
-    this.fill = "rgba(0, 0, 0, 0)"
-    this.borderSize = 3;
-
-    this.borderColorPolygone = "blue";
-    this.borderColorPolyline = "red";
+    this.polygons = this._dataService.getDataPolygons();
   }
 
   onClick(evt) {
