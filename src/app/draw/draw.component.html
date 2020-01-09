@@ -9,12 +9,19 @@
   (clickEvent)="onClick($event)"
 >
 
-  <svg-circle 
+  <svg-circle
+    *ngFor="let item of points" 
     [radius]="rCircle" 
-    [x]="xCircle" [y]="yCircle" 
-    [color]="bgColorCircle" 
+    x={{item.circle.x}} y={{item.circle.y}} 
+    color={{item.circle.color}} 
     (clickEvent)="onClickEl($event)" >
   </svg-circle>
+  <svg-text 
+    *ngFor="let item of points" 
+    text={{item.label.text}} 
+    x={{item.label.x}} y={{item.label.y}} 
+    [size]="sizeText" [color]="colorText" >
+  </svg-text>
 
   <svg-polygon 
     [points]="pointsPolygone" 
@@ -29,11 +36,5 @@
     [borderSize]="borderSize" 
     [borderColor]="borderColorPolyline" >
   </svg-polyline>
-
-  <svg-text 
-    [text]="text" 
-    [x]="xText" [y]="yText" 
-    [size]="sizeText" [color]="colorText" >
-  </svg-text>
 
 </svg-container>

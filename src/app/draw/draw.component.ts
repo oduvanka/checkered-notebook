@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-draw',
@@ -12,9 +13,8 @@ export class DrawComponent implements OnInit {
   private sizePoint: number;
 
   private rCircle: number;
-  private xCircle: number;
-  private yCircle: number;
-  private bgColorCircle: string;
+  private sizeText: number;
+  private colorText: string;
 
   private pointsPolyline: Array<Array<number>>;
   private pointsPolygone: Array<Array<number>>;
@@ -25,31 +25,47 @@ export class DrawComponent implements OnInit {
   private borderColorPolygone: string;
   private borderColorPolyline: string;
 
-  private text: string;
-  private xText: number;
-  private yText: number;
-  private sizeText: number;
-  private colorText: string;
+  private data: Object[];
+  private points: Object[];
 
-  constructor() { }
+  constructor( private _dataService: DataService ) { }
 
   ngOnInit() {
-    const point = { x: 20, y: 20 };
-    const xPoint = point['x'];
-    const yPoint = point['y'];
-
     this.height = 300;
     this.isShowGrid = true;
     this.isHoverable = true;
-    this.sizePoint = 5;
+    this.sizePoint = 5;  
     
-    this.rCircle = 40;
-    /* центр круга должен совпадать с переданной точкой 20, вне зависимости от заданного радиуса */
-    this.xCircle = xPoint - this.rCircle;
-    this.yCircle =  yPoint - this.rCircle;
-    this.bgColorCircle = "rgba(0, 0, 0, 0.5)";
+    this.rCircle = 10;
+    this.sizeText = 8;
+    this.colorText = "grey";
+    
+    this.data = this._dataService.getData();
+    this.points = [];
 
-    this.pointsPolyline = [[100,100], [150,220], [250,250], [300,150]];
+    this.data.map((item) => {
+      const id = item['id'];
+      const point = item['coords'];
+      const xPoint = point['x'];
+      const yPoint = point['y'];
+      
+      // центр круга должен совпадать с переданной точкой, вне зависимости от заданного радиуса
+      const xCircle = xPoint - this.rCircle;
+      const yCircle =  yPoint - this.rCircle;
+      const bgColorCircle = item['color'];
+
+      const text = "P" + id;
+      const xText = xPoint + 0.5 * this.rCircle;
+      const yText = yPoint;
+
+      this.points.push({
+        id, 
+        circle: { x: xCircle, y: yCircle, color: bgColorCircle },
+        label: {text, x: xText, y: yText }
+      });
+    }); 
+
+    this.pointsPolyline = [[380,100], [420,220], [540,260], [580,140]];
     
     this.pointsPolygone = [[400,100], [450,150], [500,100], [450,50]];
 
@@ -58,13 +74,6 @@ export class DrawComponent implements OnInit {
 
     this.borderColorPolygone = "blue";
     this.borderColorPolyline = "red";
-
-    this.text = "Point N"
-    this.sizeText = 24;
-    /* Так как x и y у нас координаты верхнего левого угла круга, то ??? */
-    this.xText = this.xCircle + this.rCircle;
-    this.yText = this.yCircle + this.rCircle + this.sizeText;
-    this.colorText = "grey";
   }
 
   onClick(evt) {
