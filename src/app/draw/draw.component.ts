@@ -80,7 +80,19 @@ export class DrawComponent implements OnInit {
 
   onMouseMove(evt) {
     if (this.isNewLine) {
-      console.log("mouse move", evt);
+      let arrCoords = this.newPolyline['coords'];
+      
+      // если это не первый сдвиг после фиксации
+      if (arrCoords.length !== this.lengthCoordsNewPolyline) {
+        // удаляем последний имеющийся временный сдвиг, чтобы последним остался последний зафиксированный
+        arrCoords.pop();
+      }
+
+      const lastCoords = arrCoords[arrCoords.length - 1];
+      const cxEl = (evt.x < lastCoords[0]) ? evt.x+1 : evt.x-1;
+      const cyEl = (evt.y < lastCoords[1]) ? evt.y+1 : evt.y-1;
+
+      arrCoords.push([cxEl, cyEl]);
     }
   }
 
@@ -100,11 +112,13 @@ export class DrawComponent implements OnInit {
       this.lengthCoordsNewPolyline = 1;
     }
     else {
-      console.log("продолжаем");
       // продолжаем начатую polyline
       let arrCoords = this.newPolyline['coords'];
       const lastCoords = arrCoords[arrCoords.length - 1];
+      
       if ((lastCoords[0] !== cxEl) || (lastCoords[1] !== cyEl)) {
+        // удаляем временную точку, которая добавлялась при mouseMove
+        arrCoords.pop();
         arrCoords.push([cxEl, cyEl]);
         this.lengthCoordsNewPolyline++;
       }
@@ -113,9 +127,10 @@ export class DrawComponent implements OnInit {
 
   onDoubleClickEl(evt) {
     if (this.isNewLine) {
-      /* завершаем начатую ранее polyline */
+      // завершаем начатую ранее polyline
       this.isNewLine = false;
       const arrCoords = this.newPolyline['coords'];
+
       if (arrCoords.length > 1) {
         this.polylines.push(this.newPolyline);
         this.newPolyline = {};
@@ -125,16 +140,12 @@ export class DrawComponent implements OnInit {
 
   onMouseOverEl(evt) {
     //console.log("mouse over to the el ", evt);
-    const el = evt.target;
-    /*el.style.stroke="black"
-    el.style.strokeWidth="1"*/
+    //const el = evt.target;
   }
 
   onMouseOutEl(evt) {
     //console.log("mouse out to the el ", evt);
-    const el = evt.target;
-    /*el.style.stroke="none"
-    el.style.strokeWidth="none"*/
+    //const el = evt.target;
   }
 
 }
