@@ -1,37 +1,55 @@
 <p>draw works!</p>
 
-<svg-container 
+<svg-container
   containerId="svg-element"
-  [height]="height" 
+  [height]="height"
   [showGrid]="isShowGrid"
   [hoverable]="isHoverable"
   [pointSize]="sizePoint"
   (clickEvent)="onClick($event)"
+  (mouseMoveEvent)="onMouseMove($event)"
 >
 
-  <svg-polygon 
-    *ngFor="let item of polygons" 
-    points={{item.coords}} 
-    fill={{item.color}} 
-    [borderSize]="borderSize" 
+  <svg-polygon
+    *ngFor="let item of polygons"
+    points={{item.coords}}
+    fill={{item.color}}
+    [borderSize]="borderSize"
     borderColor={{item.color}} >
   </svg-polygon>
 
+  <svg-polyline
+    *ngFor="let item of polylines"
+    points={{item.coords}}
+    fill="none"
+    [borderSize]="borderSize"
+    borderColor={{item.color}} >
+  </svg-polyline>
+
+  <svg-polyline
+    *ngIf="isNewLine"
+    points={{newPolyline.coords}}
+    fill="none"
+    [borderSize]="borderSize"
+    borderColor={{newPolyline.color}} >
+  </svg-polyline>
+
   <svg-circle
-    *ngFor="let item of points" 
-    [radius]="rCircle" 
-    x={{item.circle.x}} y={{item.circle.y}} 
-    color={{item.circle.color}} 
+    *ngFor="let item of points"
+    [radius]="rCircle"
+    x={{item.circle.x}} y={{item.circle.y}}
+    color={{item.circle.color}}
     [classes]="myClasses"
-    (clickEvent)="onClickEl($event)" 
-    (mouseOverEvent)="onMouseOverEl($event)" 
+    (clickEvent)="onClickEl($event)"
+    (doubleClickEvent)="onDoubleClickEl($event)"
+    (mouseOverEvent)="onMouseOverEl($event)"
     (mouseOutEvent)="onMouseOutEl($event)" >
   </svg-circle>
 
   <svg-text 
-    *ngFor="let item of points" 
-    text={{item.label.text}} 
-    x={{item.label.x}} y={{item.label.y}} 
+    *ngFor="let item of points"
+    text={{item.label.text}}
+    x={{item.label.x}} y={{item.label.y}}
     [size]="sizeText" [color]="colorText" >
   </svg-text>
 
