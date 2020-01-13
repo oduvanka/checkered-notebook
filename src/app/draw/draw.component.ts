@@ -7,27 +7,27 @@ import { DataService } from '../data.service';
   styleUrls: ['./draw.component.css']
 })
 export class DrawComponent implements OnInit {
-  private height: number;
-  private isShowGrid: boolean;
-  private isHoverable: boolean;
-  private sizePoint: number;
+  public height: number;
+  public isShowGrid: boolean;
+  public isHoverable: boolean;
+  public sizePoint: number;
 
-  private rCircle: number;
+  public rCircle: number;
   public myClasses: string[];
-  private sizeText: number;
-  private colorText: string;
+  public sizeText: number;
+  public colorText: string;
 
-  private borderSize: number;
+  public borderSize: number;
 
-  private dataPoints: Object[];
-  private points: Object[];
-  private polygons: Object[];
-  private isNewLine: boolean;
-  private polylines: Object[];
-  private newPolyline: Object;
-  private lengthCoordsNewPolyline: number;
+  public dataPoints: Object[];
+  public points: Object[];
+  public polygons: Object[];
+  public isNewLine: boolean;
+  public polylines: Object[];
+  public newPolyline: Object;
+  public lengthCoordsNewPolyline: number;
 
-  constructor( private _dataService: DataService ) { }
+  constructor( public _dataService: DataService ) { }
 
   ngOnInit() {
     this.height = 300;
