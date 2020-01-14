@@ -3,6 +3,11 @@
   stroke-width: 3;
 }
 
+.test1:focus {
+  stroke: red;
+  stroke-width: 3;
+}
+
 .test2 {
   fill-opacity: 0.5;
 }

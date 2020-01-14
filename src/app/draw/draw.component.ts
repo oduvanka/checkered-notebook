@@ -99,7 +99,7 @@ export class DrawComponent implements OnInit {
     }
   }
 
-  onClickEl(evt) {
+  onClickCircle(evt) {
     const el = evt.target;
     const attrEl = el.attributes;
     const cxEl = attrEl.getNamedItem('cx').value;
@@ -126,6 +126,10 @@ export class DrawComponent implements OnInit {
         this.lengthCoordsNewPolyline++;
       }
     }
+  }
+
+  onClickPolyline(evt) {
+    console.log("click line", evt);
   }
 
   onDoubleClickEl(evt) {

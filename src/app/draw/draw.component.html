@@ -13,7 +13,7 @@
   <svg-polygon
     *ngFor="let item of polygons"
     points={{item.coords}}
-    fill={{item.color}}
+    fill="none"
     [borderSize]="borderSize"
     borderColor={{item.color}} >
   </svg-polygon>
@@ -23,7 +23,8 @@
     points={{item.coords}}
     fill="none"
     [borderSize]="borderSize"
-    borderColor={{item.color}} >
+    borderColor={{item.color}} 
+    (clickEvent)="onClickPolyline($event)" >
   </svg-polyline>
 
   <svg-polyline
@@ -40,10 +41,11 @@
     x={{item.circle.x}} y={{item.circle.y}}
     color={{item.circle.color}}
     [classes]="myClasses"
-    (clickEvent)="onClickEl($event)"
+    (clickEvent)="onClickCircle($event)"
     (doubleClickEvent)="onDoubleClickEl($event)"
     (mouseOverEvent)="onMouseOverEl($event)"
-    (mouseOutEvent)="onMouseOutEl($event)" >
+    (mouseOutEvent)="onMouseOutEl($event)" 
+    focusable="true" tabindex="0" >
   </svg-circle>
 
   <svg-text 
@@ -56,6 +58,9 @@
 </svg-container>
 
 <svg>
-  <circle class="test1 test2" cx="40" cy="40" r="10" stroke="#006600" fill="#00cc00" />
+  <circle 
+    class="test1 test2" cx="40" cy="40" r="10" stroke="#006600" fill="#00cc00" 
+    focusable="true" tabindex="0" (click)="onClickEl($event)"
+  />
   <circle class="test2" cx="40" cy="80" r="10" stroke="#660000" fill="#cc0000" />
 </svg>
