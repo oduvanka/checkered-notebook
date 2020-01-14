@@ -1,5 +1,5 @@
 export class Polyline {
-  id: number;
+  id: string;
   coords: number[][];
   color: string;
 }

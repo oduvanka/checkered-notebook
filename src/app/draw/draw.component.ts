@@ -15,7 +15,6 @@ export class DrawComponent implements OnInit {
   public sizePoint: number;
   // точка с меткой
   public rCircle: number;
-  public myClasses: string[];
   public sizeText: number;
   public colorText: string;
   // ломаная и многоугольник
@@ -25,10 +24,11 @@ export class DrawComponent implements OnInit {
   public points: Object[];
   public polygons: Object[];
   // новые фигуры
-  public newPolyline: Polyline;
+  public editPolyline: Polyline;
   public polylines: Polyline[];
-  public isNewLine: boolean;
-  public lengthCoordsNewPolyline: number;
+  public isEditLine: boolean;
+  public borderSizeEditLine: number;
+  public lengthCoordsEditPolyline: number;
 
   constructor( public _dataService: DataService ) { }
 
@@ -39,11 +39,10 @@ export class DrawComponent implements OnInit {
     this.sizePoint = 5;  
     
     this.rCircle = 20;
-    this.myClasses = ['test1'];
     this.sizeText = 8;
     this.colorText = "grey";
 
-    this.borderSize = 1;
+    this.borderSize = 3;
     
     this.dataPoints = this._dataService.getDataPoints();
     this.points = [];
@@ -71,22 +70,26 @@ export class DrawComponent implements OnInit {
 
     this.polygons = this._dataService.getDataPolygons();
 
-    this.isNewLine = false;
-    //this.newPolyline = {};
-    this.lengthCoordsNewPolyline = 0;
+    this.isEditLine = false;
+    this.borderSizeEditLine = 5;
+    this.lengthCoordsEditPolyline = 0;
+    this.editPolyline = {id: "0", coords: [], color: ""};
     this.polylines = [];
   }
 
   onClick(evt) {
     console.log("click!", evt);
+    this.isEditLine = false;
+    this.editPolyline = {id: "0", coords: [], color: ""};
   }
 
   onMouseMove(evt) {
-    if (this.isNewLine) {
-      let arrCoords = this.newPolyline['coords'];
+    console.log("1");
+    if (this.isEditLine) {
+      let arrCoords = this.editPolyline['coords'];
       
       // если это не первый сдвиг после фиксации
-      if (arrCoords.length !== this.lengthCoordsNewPolyline) {
+      if (arrCoords.length !== this.lengthCoordsEditPolyline) {
         // удаляем последний имеющийся временный сдвиг, чтобы последним остался последний зафиксированный
         arrCoords.pop();
       }
@@ -100,59 +103,62 @@ export class DrawComponent implements OnInit {
   }
 
   onClickCircle(evt) {
+    console.log(evt);
     const el = evt.target;
     const attrEl = el.attributes;
     const cxEl = attrEl.getNamedItem('cx').value;
     const cyEl = attrEl.getNamedItem('cy').value;
+    const fillEl = attrEl.getNamedItem('fill').value;
 
-    if (!this.isNewLine) {
-      this.isNewLine = true;
+    if (!this.isEditLine) {
+      this.isEditLine = true;
       // создаём новую polyline
-      const id = this.polylines.length;
+      const id = this.polylines.length + "";
       const coords = [[cxEl, cyEl]];
-      const color = "#000000";
-      this.newPolyline = {id, coords, color};
-      this.lengthCoordsNewPolyline = 1;
+      const color = fillEl;
+      this.editPolyline = {id, coords, color};
+      this.lengthCoordsEditPolyline = 1;
     }
     else {
       // продолжаем начатую polyline
-      let arrCoords = this.newPolyline['coords'];
+      let arrCoords = this.editPolyline['coords'];
       const lastCoords = arrCoords[arrCoords.length - 1];
       
       if ((lastCoords[0] !== cxEl) || (lastCoords[1] !== cyEl)) {
         // удаляем временную точку, которая добавлялась при mouseMove
         arrCoords.pop();
         arrCoords.push([cxEl, cyEl]);
-        this.lengthCoordsNewPolyline++;
+        this.lengthCoordsEditPolyline++;
       }
     }
   }
 
   onClickPolyline(evt) {
-    console.log("click line", evt);
+    const polyline = evt.target;
+    const attr = polyline.attributes;
+    const points = attr.getNamedItem("points");
+    const strPoints = points.value;
+
+    const currentPolyline = this.polylines.find((item) => {
+      const coords = item['coords'];
+      const strCoords = coords.join(',');
+      if (strPoints === strCoords) return item;
+    });
+
+    this.editPolyline = currentPolyline;
+    this.isEditLine = true;
   }
 
   onDoubleClickEl(evt) {
-    if (this.isNewLine) {
+    if (this.isEditLine) {
       // завершаем начатую ранее polyline
-      this.isNewLine = false;
-      const arrCoords = this.newPolyline['coords'];
+      this.isEditLine = false;
+      const arrCoords = this.editPolyline['coords'];
 
       if (arrCoords.length > 1) {
-        this.polylines.push(this.newPolyline);
-        //this.newPolyline = {};
+        this.polylines.push(this.editPolyline);
+        this.editPolyline = {id: "0", coords: [], color: ""};
       }
     }
   }
-
-  onMouseOverEl(evt) {
-    //console.log("mouse over to the el ", evt);
-    //const el = evt.target;
-  }
-
-  onMouseOutEl(evt) {
-    //console.log("mouse out to the el ", evt);
-    //const el = evt.target;
-  }
-
 }
