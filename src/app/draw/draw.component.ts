@@ -20,7 +20,6 @@ export class DrawComponent implements OnInit {
   // ломаная и многоугольник
   public borderSize: number;
   // имеющиеся фигуры
-  public dataPoints: Object[];
   public points: Object[];
   public polygons: Object[];
   // новые фигуры
@@ -44,9 +43,20 @@ export class DrawComponent implements OnInit {
 
     this.borderSize = 3;
     
-    this.dataPoints = this._dataService.getDataPoints();
-    this.points = [];
-    this.dataPoints.map((item) => {
+    const dataPoints = this._dataService.getDataPoints();
+    this.points = this.createArrOfPointsVsLabels(dataPoints);
+    this.polygons = this._dataService.getDataPolygons();
+
+    this.isEditLine = false;
+    this.borderSizeEditLine = 5;
+    this.lengthCoordsEditPolyline = 0;
+    this.editPolyline = {id: "0", coords: [], color: ""};
+    this.polylines = [];
+  }
+
+  private createArrOfPointsVsLabels(data: Object[]) {
+    const newData = [];
+    data.map((item) => {
       const id = item['id'];
       const point = item['coords'];
       const xPoint = point['x'];
@@ -61,30 +71,28 @@ export class DrawComponent implements OnInit {
       const xText = xPoint + 0.5 * this.rCircle;
       const yText = yPoint;
 
-      this.points.push({
+      newData.push({
         id, 
         circle: { x: xCircle, y: yCircle, color: bgColorCircle },
         label: {text, x: xText, y: yText }
       });
     });
 
-    this.polygons = this._dataService.getDataPolygons();
-
-    this.isEditLine = false;
-    this.borderSizeEditLine = 5;
-    this.lengthCoordsEditPolyline = 0;
-    this.editPolyline = {id: "0", coords: [], color: ""};
-    this.polylines = [];
+    return newData;
   }
 
   onClick(evt) {
-    console.log("click!", evt);
+    console.log("click canvas", evt);
     this.isEditLine = false;
     this.editPolyline = {id: "0", coords: [], color: ""};
   }
 
+  onDoubleClick(evt) {
+    console.log("2-click canvas", evt);
+  }
+
   onMouseMove(evt) {
-    console.log("1");
+    console.log("mouse move canvas");
     if (this.isEditLine) {
       let arrCoords = this.editPolyline['coords'];
       
@@ -103,7 +111,7 @@ export class DrawComponent implements OnInit {
   }
 
   onClickCircle(evt) {
-    console.log(evt);
+    console.log("click circle", evt);
     const el = evt.target;
     const attrEl = el.attributes;
     const cxEl = attrEl.getNamedItem('cx').value;
@@ -134,6 +142,7 @@ export class DrawComponent implements OnInit {
   }
 
   onClickPolyline(evt) {
+    console.log("click polyline", evt);
     const polyline = evt.target;
     const attr = polyline.attributes;
     const points = attr.getNamedItem("points");
@@ -149,7 +158,8 @@ export class DrawComponent implements OnInit {
     this.isEditLine = true;
   }
 
-  onDoubleClickEl(evt) {
+  onDoubleClickCircle(evt) {
+    console.log("2-click circle", evt);
     if (this.isEditLine) {
       // завершаем начатую ранее polyline
       this.isEditLine = false;

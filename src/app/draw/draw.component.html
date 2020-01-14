@@ -7,6 +7,7 @@
   [hoverable]="isHoverable"
   [pointSize]="sizePoint"
   (clickEvent)="onClick($event)"
+  (doubleClickEvent)="onDoubleClick($event)"
   (mouseMoveEvent)="onMouseMove($event)"
 >
 
@@ -40,7 +41,7 @@
     text={{item.label.text}}
     x={{item.label.x}} y={{item.label.y}}
     [size]="sizeText" [color]="colorText" 
-    pointer-events="none" >
+     >
   </svg-text>
 
   <svg-circle
@@ -49,8 +50,8 @@
     x={{item.circle.x}} y={{item.circle.y}}
     color={{item.circle.color}}
     (clickEvent)="onClickCircle($event)"
-    (doubleClickEvent)="onDoubleClickEl($event)"
-    focusable="true" tabindex="0" >
+    (doubleClickEvent)="onDoubleClickCircle($event)"
+     >
   </svg-circle>
 
 </svg-container>
