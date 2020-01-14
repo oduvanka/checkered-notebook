@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
+import { Polyline } from '../polyline';
 
 @Component({
   selector: 'app-draw',
@@ -7,24 +8,26 @@ import { DataService } from '../data.service';
   styleUrls: ['./draw.component.css']
 })
 export class DrawComponent implements OnInit {
+  // холст
   public height: number;
   public isShowGrid: boolean;
   public isHoverable: boolean;
   public sizePoint: number;
-
+  // точка с меткой
   public rCircle: number;
   public myClasses: string[];
   public sizeText: number;
   public colorText: string;
-
+  // ломаная и многоугольник
   public borderSize: number;
-
+  // имеющиеся фигуры
   public dataPoints: Object[];
   public points: Object[];
   public polygons: Object[];
+  // новые фигуры
+  public newPolyline: Polyline;
+  public polylines: Polyline[];
   public isNewLine: boolean;
-  public polylines: Object[];
-  public newPolyline: Object;
   public lengthCoordsNewPolyline: number;
 
   constructor( public _dataService: DataService ) { }
@@ -69,7 +72,7 @@ export class DrawComponent implements OnInit {
     this.polygons = this._dataService.getDataPolygons();
 
     this.isNewLine = false;
-    this.newPolyline = {};
+    //this.newPolyline = {};
     this.lengthCoordsNewPolyline = 0;
     this.polylines = [];
   }
@@ -133,7 +136,7 @@ export class DrawComponent implements OnInit {
 
       if (arrCoords.length > 1) {
         this.polylines.push(this.newPolyline);
-        this.newPolyline = {};
+        //this.newPolyline = {};
       }
     }
   }
