@@ -38,13 +38,6 @@
     borderColor={{editPolyline.color}} >
   </svg-polyline>
 
-  <svg-text 
-    *ngFor="let item of points"
-    text={{item.label.text}}
-    x={{item.label.x}} y={{item.label.y}}
-    [size]="sizeText" [color]="colorText" >
-  </svg-text>
-
   <svg-circle
     *ngFor="let item of points"
     [radius]="rCircle"
@@ -55,5 +48,12 @@
     (mouseOverEvent)="onMouseOverCircle()"
     (mouseOutEvent)="onMouseOutCircle()" >
   </svg-circle>
+
+  <svg-text 
+    *ngFor="let item of points"
+    text={{item.label.text}}
+    x={{item.label.x}} y={{item.label.y}}
+    [size]="sizeText" [color]="colorText" >
+  </svg-text>
 
 </svg-container>

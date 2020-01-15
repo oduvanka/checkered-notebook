@@ -40,7 +40,7 @@ export class DrawComponent implements OnInit {
     this.isHoverable = true;
     this.sizePoint = 0;  
     
-    this.rCircle = 20;
+    this.rCircle = 18;
     this.sizeText = 8;
     this.colorText = "grey";
 
@@ -59,7 +59,7 @@ export class DrawComponent implements OnInit {
 
   onClick(evt) {
     //console.log("click canvas", evt);
-    this.turnOffLineDrawing();
+    if (this.isEditLine) this.turnOffLineDrawing();
   }
 
   onDoubleClick(evt) {
@@ -201,6 +201,24 @@ export class DrawComponent implements OnInit {
     this.isEditLine = false;
     this.editPolyline = {id: "0", coords: [], color: ""};
     this.lengthCoordsEditPolyline = 0;
+
+    setTimeout(() => {
+      /* Переместим все polyline до circle, чтобы на холсте circle ничего не перекрывало */
+      const container = document.getElementById("svg-element");
+      if (container) {
+        let svg = container.getElementsByTagName("svg");
+        let svgContainer = svg[0];
+        let firstCircle = svgContainer.querySelector("circle");
+        let polylines = svgContainer.querySelectorAll("polyline");
+
+        polylines.forEach((item) => {
+          console.log(item);
+          svgContainer.insertBefore(item, firstCircle);
+        });
+        console.log(svgContainer);
+      }
+    }, 100);
+    
   }
   private turnOnLineDrawing() {
     this.isEditLine = true;
