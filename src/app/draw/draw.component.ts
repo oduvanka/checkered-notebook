@@ -204,6 +204,7 @@ export class DrawComponent implements OnInit {
   }
   private turnOnLineDrawing() {
     this.isEditLine = true;
-    this.lengthCoordsEditPolyline = 0;
+    const coords = this.editPolyline['coords'];
+    this.lengthCoordsEditPolyline = coords.length;
   }
 }
