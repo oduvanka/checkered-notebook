@@ -36,9 +36,9 @@ export class DrawComponent implements OnInit {
     this.isShowGrid = true;
     /* isHoverable
     false - нет события клика по холсту, 
-    true - нет события клика любого эл-та, т.к. sizePoint (даже = 0) перекрывает эл-т */
+    true - нет события клика любого эл-та, т.к. sizePoint (даже = 0) как бы перекрывает эл-т */
     this.isHoverable = true;
-    this.sizePoint = 10;  
+    this.sizePoint = 0;  
     
     this.rCircle = 20;
     this.sizeText = 8;
@@ -50,46 +50,16 @@ export class DrawComponent implements OnInit {
     this.points = this.createArrOfPointsVsLabels(dataPoints);
     this.polygons = this._dataService.getDataPolygons();
 
-    this.isEditLine = false;
     this.borderSizeEditLine = 5;
-    this.lengthCoordsEditPolyline = 0;
-    this.editPolyline = {id: "0", coords: [], color: ""};
+    this.turnOffLineDrawing();    
     this.polylines = [];
-  }
-
-  private createArrOfPointsVsLabels(data: Object[]) {
-    const newData = [];
-    data.map((item) => {
-      const id = item['id'];
-      const point = item['coords'];
-      const xPoint = point['x'];
-      const yPoint = point['y'];
-      
-      // центр круга должен совпадать с переданной точкой, вне зависимости от заданного радиуса
-      const xCircle = xPoint - this.rCircle;
-      const yCircle =  yPoint - this.rCircle;
-      const bgColorCircle = item['color'];
-
-      const text = "P" + id;
-      const xText = xPoint + 0.5 * this.rCircle;
-      const yText = yPoint;
-
-      newData.push({
-        id, 
-        circle: { x: xCircle, y: yCircle, color: bgColorCircle },
-        label: {text, x: xText, y: yText }
-      });
-    });
-
-    return newData;
   }
 
   /* СОБЫТИЯ ХОЛСТА */
 
   onClick(evt) {
     //console.log("click canvas", evt);
-    this.isEditLine = false;
-    this.editPolyline = {id: "0", coords: [], color: ""};
+    this.turnOffLineDrawing();
   }
 
   onDoubleClick(evt) {
@@ -126,7 +96,7 @@ export class DrawComponent implements OnInit {
     const fillEl = attrEl.getNamedItem('fill').value;
 
     if (!this.isEditLine) {
-      this.isEditLine = true;
+      this.turnOnLineDrawing();
       // создаём новую polyline
       const id = this.polylines.length + "";
       const coords = [[cxEl, cyEl]];
@@ -152,13 +122,13 @@ export class DrawComponent implements OnInit {
     //console.log("2-click circle", evt);
     if (this.isEditLine) {
       // завершаем начатую ранее polyline
-      this.isEditLine = false;
       const arrCoords = this.editPolyline['coords'];
 
       if (arrCoords.length > 1) {
         this.polylines.push(this.editPolyline);
-        this.editPolyline = {id: "0", coords: [], color: ""};
       }
+
+      this.turnOffLineDrawing();
     }
   }
 
@@ -186,7 +156,8 @@ export class DrawComponent implements OnInit {
     });
 
     this.editPolyline = currentPolyline;
-    this.isEditLine = true;
+
+    this.turnOnLineDrawing();
   }
   
   onMouseOverPolyline() {
@@ -195,5 +166,44 @@ export class DrawComponent implements OnInit {
 
   onMouseOutPolyline() {
     this.isHoverable = true;
+  }
+
+  /* ПРОЧИЕ ФУНКЦИИ */
+
+  private createArrOfPointsVsLabels(data: Object[]) {
+    const newData = [];
+    data.map((item) => {
+      const id = item['id'];
+      const point = item['coords'];
+      const xPoint = point['x'];
+      const yPoint = point['y'];
+      
+      // центр круга должен совпадать с переданной точкой, вне зависимости от заданного радиуса
+      const xCircle = xPoint - this.rCircle;
+      const yCircle =  yPoint - this.rCircle;
+      const bgColorCircle = item['color'];
+
+      const text = "P" + id;
+      const xText = xPoint + 0.5 * this.rCircle;
+      const yText = yPoint;
+
+      newData.push({
+        id, 
+        circle: { x: xCircle, y: yCircle, color: bgColorCircle },
+        label: {text, x: xText, y: yText }
+      });
+    });
+
+    return newData;
+  }
+
+  private turnOffLineDrawing() {
+    this.isEditLine = false;
+    this.editPolyline = {id: "0", coords: [], color: ""};
+    this.lengthCoordsEditPolyline = 0;
+  }
+  private turnOnLineDrawing() {
+    this.isEditLine = true;
+    this.lengthCoordsEditPolyline = 0;
   }
 }
