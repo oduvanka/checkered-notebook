@@ -25,7 +25,9 @@
     fill="none"
     [borderSize]="borderSize"
     borderColor={{item.color}} 
-    (clickEvent)="onClickPolyline($event)" >
+    (clickEvent)="onClickPolyline($event)" 
+    (mouseOverEvent)="onMouseOverPolyline()"
+    (mouseOutEvent)="onMouseOutPolyline()" >
   </svg-polyline>
 
   <svg-polyline
@@ -40,8 +42,7 @@
     *ngFor="let item of points"
     text={{item.label.text}}
     x={{item.label.x}} y={{item.label.y}}
-    [size]="sizeText" [color]="colorText" 
-     >
+    [size]="sizeText" [color]="colorText" >
   </svg-text>
 
   <svg-circle
@@ -51,7 +52,8 @@
     color={{item.circle.color}}
     (clickEvent)="onClickCircle($event)"
     (doubleClickEvent)="onDoubleClickCircle($event)"
-     >
+    (mouseOverEvent)="onMouseOverCircle()"
+    (mouseOutEvent)="onMouseOutCircle()" >
   </svg-circle>
 
 </svg-container>

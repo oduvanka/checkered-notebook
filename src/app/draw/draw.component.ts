@@ -34,8 +34,11 @@ export class DrawComponent implements OnInit {
   ngOnInit() {
     this.height = 300;
     this.isShowGrid = true;
-    this.isHoverable = false;
-    this.sizePoint = 5;  
+    /* isHoverable
+    false - нет события клика по холсту, 
+    true - нет события клика любого эл-та, т.к. sizePoint (даже = 0) перекрывает эл-т */
+    this.isHoverable = true;
+    this.sizePoint = 10;  
     
     this.rCircle = 20;
     this.sizeText = 8;
@@ -81,18 +84,20 @@ export class DrawComponent implements OnInit {
     return newData;
   }
 
+  /* СОБЫТИЯ ХОЛСТА */
+
   onClick(evt) {
-    console.log("click canvas", evt);
+    //console.log("click canvas", evt);
     this.isEditLine = false;
     this.editPolyline = {id: "0", coords: [], color: ""};
   }
 
   onDoubleClick(evt) {
-    console.log("2-click canvas", evt);
+    //console.log("2-click canvas", evt);
   }
 
   onMouseMove(evt) {
-    console.log("mouse move canvas");
+    //console.log("mouse move canvas");
     if (this.isEditLine) {
       let arrCoords = this.editPolyline['coords'];
       
@@ -110,8 +115,10 @@ export class DrawComponent implements OnInit {
     }
   }
 
+  /* СОБЫТИЯ ТОЧКИ */
+
   onClickCircle(evt) {
-    console.log("click circle", evt);
+    //console.log("click circle", evt);
     const el = evt.target;
     const attrEl = el.attributes;
     const cxEl = attrEl.getNamedItem('cx').value;
@@ -141,8 +148,32 @@ export class DrawComponent implements OnInit {
     }
   }
 
+  onDoubleClickCircle(evt) {
+    //console.log("2-click circle", evt);
+    if (this.isEditLine) {
+      // завершаем начатую ранее polyline
+      this.isEditLine = false;
+      const arrCoords = this.editPolyline['coords'];
+
+      if (arrCoords.length > 1) {
+        this.polylines.push(this.editPolyline);
+        this.editPolyline = {id: "0", coords: [], color: ""};
+      }
+    }
+  }
+
+  onMouseOverCircle() {
+    this.isHoverable = false;
+  }
+
+  onMouseOutCircle() {
+    this.isHoverable = true;
+  }
+
+  /* СОБЫТИЯ ЛИНИИ */
+
   onClickPolyline(evt) {
-    console.log("click polyline", evt);
+    //console.log("click polyline", evt);
     const polyline = evt.target;
     const attr = polyline.attributes;
     const points = attr.getNamedItem("points");
@@ -157,18 +188,12 @@ export class DrawComponent implements OnInit {
     this.editPolyline = currentPolyline;
     this.isEditLine = true;
   }
+  
+  onMouseOverPolyline() {
+    this.isHoverable = false;
+  }
 
-  onDoubleClickCircle(evt) {
-    console.log("2-click circle", evt);
-    if (this.isEditLine) {
-      // завершаем начатую ранее polyline
-      this.isEditLine = false;
-      const arrCoords = this.editPolyline['coords'];
-
-      if (arrCoords.length > 1) {
-        this.polylines.push(this.editPolyline);
-        this.editPolyline = {id: "0", coords: [], color: ""};
-      }
-    }
+  onMouseOutPolyline() {
+    this.isHoverable = true;
   }
 }
