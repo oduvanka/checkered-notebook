@@ -63,7 +63,7 @@ export class DrawComponent implements OnInit {
   onClick(evt) {
     //console.log("click canvas", evt);
     if (this.isEditLine) {
-      let arrCoords = this.editPolyline['coords'];
+      let arrCoords = this.editPolyline.coords;
       arrCoords.pop();
       this.turnOffLineDrawing();
     }
@@ -72,7 +72,7 @@ export class DrawComponent implements OnInit {
   onDoubleClick(evt) {
     //console.log("2-click canvas", evt);
     if (this.isEditLine) {
-      let arrCoords = this.editPolyline['coords'];
+      let arrCoords = this.editPolyline.coords;
       arrCoords.pop();
       this.turnOffLineDrawing();
     }
@@ -117,7 +117,7 @@ export class DrawComponent implements OnInit {
     }
     else {
       // продолжаем начатую polyline
-      let arrCoords = this.editPolyline['coords'];
+      let arrCoords = this.editPolyline.coords;
       const lastCoords = arrCoords[arrCoords.length - 1];
       
       if ((lastCoords[0] !== cxEl) || (lastCoords[1] !== cyEl)) {
@@ -133,12 +133,22 @@ export class DrawComponent implements OnInit {
     //console.log("2-click circle", evt);
     if (this.isEditLine) {
       // завершаем начатую ранее polyline
-      const arrCoords = this.editPolyline['coords'];
+      const id = this.editPolyline.id;
+      const arrCoords = this.editPolyline.coords;
+
+      let existingLine = this.polylines.find((item) => item.id === id);
 
       if (arrCoords.length > 1) {
-        this.polylines.push(this.editPolyline);
+        // если редактировали существующую линию
+        if (existingLine) {
+          existingLine = this.editPolyline;
+        }
+        else {
+          // если новая линия
+          this.polylines.push(this.editPolyline);
+        }
       }
-
+console.log(this.polylines);
       this.turnOffLineDrawing();
     }
   }
@@ -161,7 +171,7 @@ export class DrawComponent implements OnInit {
     const strPoints = points.value;
 
     const currentPolyline = this.polylines.find((item) => {
-      const coords = item['coords'];
+      const coords = item.coords;
       const strCoords = coords.join(',');
       if (strPoints === strCoords) return item;
     });
@@ -195,7 +205,7 @@ export class DrawComponent implements OnInit {
   private convertRgbToStrRgba(hex: string):string {
     /* Так как для svg не удаётся пока что задать стили, 
     то в html-шаблонe сделаем polyline прозрачной с помощью rgba-цвета  */
-    
+
     const rgb = this.convertHexToRgb(hex);
     const result = rgb ? "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + this.transparencyColorPolyline + ")" : hex;
 
@@ -252,7 +262,7 @@ export class DrawComponent implements OnInit {
   }
   private turnOnLineDrawing() {
     this.isEditLine = true;
-    const coords = this.editPolyline['coords'];
+    const coords = this.editPolyline.coords;
     this.lengthCoordsEditPolyline = coords.length;
   }
 }
