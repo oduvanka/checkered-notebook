@@ -23,9 +23,9 @@ export class DrawComponent implements OnInit {
   public points: Object[];
   public polygons: Object[];
   // новые фигуры
-  public editPolyline: Polyline;
+  @Input() editPolyline: Polyline;
   @Input() polylines: Polyline[];
-  public isEditLine: boolean;
+  @Input() isEditLine: boolean;
   public borderSizeEditLine: number;
   public lengthCoordsEditPolyline: number;
 
@@ -58,11 +58,20 @@ export class DrawComponent implements OnInit {
 
   onClick(evt) {
     //console.log("click canvas", evt);
-    if (this.isEditLine) this.turnOffLineDrawing();
+    if (this.isEditLine) {
+      let arrCoords = this.editPolyline['coords'];
+      arrCoords.pop();
+      this.turnOffLineDrawing();
+    }
   }
 
   onDoubleClick(evt) {
     //console.log("2-click canvas", evt);
+    if (this.isEditLine) {
+      let arrCoords = this.editPolyline['coords'];
+      arrCoords.pop();
+      this.turnOffLineDrawing();
+    }
   }
 
   onMouseMove(evt) {
@@ -198,7 +207,7 @@ export class DrawComponent implements OnInit {
 
   private turnOffLineDrawing() {
     this.isEditLine = false;
-    this.editPolyline = {id: "0", coords: [], color: ""};
+    this.editPolyline = {id: "-", coords: [], color: ""};
     this.lengthCoordsEditPolyline = 0;
 
     setTimeout(() => {
@@ -211,10 +220,8 @@ export class DrawComponent implements OnInit {
         let polylines = svgContainer.querySelectorAll("polyline");
 
         polylines.forEach((item) => {
-          console.log(item);
           svgContainer.insertBefore(item, firstCircle);
         });
-        console.log(svgContainer);
       }
     }, 100);
     

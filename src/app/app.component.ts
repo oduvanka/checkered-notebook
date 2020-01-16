@@ -10,4 +10,6 @@ export class AppComponent {
   title = 'testDraw10';
 
   polylines: Polyline[] = [];
+  selectedPolyline: Polyline = {id: "-", coords: [], color: ""};
+  isEditPolyLine: boolean = false;
 }

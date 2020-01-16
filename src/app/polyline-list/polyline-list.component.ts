@@ -9,7 +9,8 @@ import { Polyline } from '../polyline';
 export class PolylineListComponent implements OnInit {
 
   @Input() polylines: Polyline[];
-  private selectedPolyline: Polyline;
+  @Input() selectedPolyline: Polyline;
+  @Input() isEditLine: boolean;
 
   constructor() { }
 
@@ -17,8 +18,11 @@ export class PolylineListComponent implements OnInit {
   }
 
   onSelect(polyline: Polyline): void {
-    console.log("click list");
+    console.log("select polyline N", polyline.id, polyline.color);
     this.selectedPolyline = polyline;
+    this.isEditLine = true;
   }
+
+  deletePolyline(polyline: Polyline): void {}
 
 }

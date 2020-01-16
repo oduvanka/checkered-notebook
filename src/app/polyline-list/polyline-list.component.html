@@ -1,6 +1,10 @@
 <p>Список линий:</p>
 <ul>
-  <li  *ngFor="let item of polylines" (click)="onSelect(item)">
-    {{item.id}} // точки: {{item.coords}} // цвет: {{item.color}}
+  <li  *ngFor="let polyline of polylines" (click)="onSelect(polyline)">
+    <a href="#">
+      <span *ngIf="polyline.id === selectedPolyline.id">(V) </span>
+      <span>N{{polyline.id}}</span> точки:<span>{{polyline.coords}}</span> цвет:<span>{{polyline.color}}</span>
+    </a>
+    <button title="delete hero" (click)="deletePolyline(polyline)">x</button>
   </li>
 </ul>
