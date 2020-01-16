@@ -1,0 +1,6 @@
+<p>Список линий:</p>
+<ul>
+  <li  *ngFor="let item of polylines" (click)="onSelect(item)">
+    {{item.id}} // точки: {{item.coords}} // цвет: {{item.color}}
+  </li>
+</ul>

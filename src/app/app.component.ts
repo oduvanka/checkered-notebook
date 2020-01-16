@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Polyline } from './polyline';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'testDraw10';
+
+  polylines: Polyline[] = [];
 }

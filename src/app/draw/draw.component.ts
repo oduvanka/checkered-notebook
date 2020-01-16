@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DataService } from '../data.service';
 import { Polyline } from '../polyline';
 
@@ -24,7 +24,7 @@ export class DrawComponent implements OnInit {
   public polygons: Object[];
   // новые фигуры
   public editPolyline: Polyline;
-  public polylines: Polyline[];
+  @Input() polylines: Polyline[];
   public isEditLine: boolean;
   public borderSizeEditLine: number;
   public lengthCoordsEditPolyline: number;
@@ -51,8 +51,7 @@ export class DrawComponent implements OnInit {
     this.polygons = this._dataService.getDataPolygons();
 
     this.borderSizeEditLine = 5;
-    this.turnOffLineDrawing();    
-    this.polylines = [];
+    this.turnOffLineDrawing();
   }
 
   /* СОБЫТИЯ ХОЛСТА */

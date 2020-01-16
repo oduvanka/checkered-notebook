@@ -6,5 +6,7 @@
   >
     ngx-svg
   </a>
-  <app-draw></app-draw>
+  <app-draw [polylines]="polylines"></app-draw>
+  <app-polyline-list *ngIf="polylines.length" [polylines]="polylines"></app-polyline-list>
+  <!--<app-polilyne-editor></app-polilyne-editor>-->
 </div>
