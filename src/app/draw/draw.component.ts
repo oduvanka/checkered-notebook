@@ -26,6 +26,8 @@ export class DrawComponent implements OnInit {
   @Input() editPolyline: Polyline;
   @Input() polylines: Polyline[];
   @Input() isEditLine: boolean;
+  private defaultColorPolyline: string;
+  private transparencyColorPolyline: number;
   public borderSizeEditLine: number;
   public lengthCoordsEditPolyline: number;
 
@@ -50,6 +52,8 @@ export class DrawComponent implements OnInit {
     this.points = this.createArrOfPointsVsLabels(dataPoints);
     this.polygons = this._dataService.getDataPolygons();
 
+    this.defaultColorPolyline = "#000000";
+    this.transparencyColorPolyline = 0.5;
     this.borderSizeEditLine = 5;
     this.turnOffLineDrawing();
   }
@@ -101,14 +105,13 @@ export class DrawComponent implements OnInit {
     const attrEl = el.attributes;
     const cxEl = attrEl.getNamedItem('cx').value;
     const cyEl = attrEl.getNamedItem('cy').value;
-    const fillEl = attrEl.getNamedItem('fill').value;
 
     if (!this.isEditLine) {
       this.turnOnLineDrawing();
       // создаём новую polyline
       const id = this.polylines.length + "";
       const coords = [[cxEl, cyEl]];
-      const color = fillEl;
+      const color = this.defaultColorPolyline;
       this.editPolyline = {id, coords, color};
       this.lengthCoordsEditPolyline = 1;
     }
@@ -177,6 +180,27 @@ export class DrawComponent implements OnInit {
   }
 
   /* ПРОЧИЕ ФУНКЦИИ */
+
+  private convertHexToRgb(hex: string) {
+    const regexp = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    const result = regexp ? {
+      r: parseInt(regexp[1], 16),
+      g: parseInt(regexp[2], 16),
+      b: parseInt(regexp[3], 16)
+    } : null;
+
+    return result
+  }
+
+  private convertRgbToStrRgba(hex: string):string {
+    /* Так как для svg не удаётся пока что задать стили, 
+    то в html-шаблонe сделаем polyline прозрачной с помощью rgba-цвета  */
+    
+    const rgb = this.convertHexToRgb(hex);
+    const result = rgb ? "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + this.transparencyColorPolyline + ")" : hex;
+
+    return result
+  }
 
   private createArrOfPointsVsLabels(data: Object[]) {
     const newData = [];

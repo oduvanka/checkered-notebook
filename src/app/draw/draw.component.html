@@ -22,7 +22,7 @@
     points={{item.coords}}
     fill="none"
     [borderSize]="borderSize"
-    borderColor={{item.color}} 
+    borderColor={{convertRgbToStrRgba(item.color)}} 
     (clickEvent)="onClickPolyline($event)" 
     (mouseOverEvent)="onMouseOverPolyline()"
     (mouseOutEvent)="onMouseOutPolyline()" >
