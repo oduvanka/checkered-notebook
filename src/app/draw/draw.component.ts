@@ -28,7 +28,6 @@ export class DrawComponent implements OnInit {
   @Input() isEditLine: boolean;
   private defaultColorPolyline: string;
   private transparencyColorPolyline: number;
-  public borderSizeEditLine: number;
   public lengthCoordsEditPolyline: number;
 
   constructor( public _dataService: DataService ) { }
@@ -54,7 +53,6 @@ export class DrawComponent implements OnInit {
 
     this.defaultColorPolyline = "#000000";
     this.transparencyColorPolyline = 0.5;
-    this.borderSizeEditLine = 5;
     this.turnOffLineDrawing();
   }
 
@@ -108,7 +106,7 @@ export class DrawComponent implements OnInit {
 
     if (!this.isEditLine) {
       this.turnOnLineDrawing();
-      // создаём новую polyline
+      // создаём первую точку новой polyline
       const id = this.polylines.length + "";
       const coords = [[cxEl, cyEl]];
       const color = this.defaultColorPolyline;
@@ -118,9 +116,12 @@ export class DrawComponent implements OnInit {
     else {
       // продолжаем начатую polyline
       let arrCoords = this.editPolyline.coords;
-      const lastCoords = arrCoords[arrCoords.length - 1];
+      const isRepeating = arrCoords.find((item) => (item[0] === cxEl && item[1] === cyEl));
       
-      if ((lastCoords[0] !== cxEl) || (lastCoords[1] !== cyEl)) {
+      if (isRepeating) {
+        alert("Линия уже проходит через эту точку");
+      }
+      else {
         // удаляем временную точку, которая добавлялась при mouseMove
         arrCoords.pop();
         arrCoords.push([cxEl, cyEl]);
@@ -136,19 +137,18 @@ export class DrawComponent implements OnInit {
       const id = this.editPolyline.id;
       const arrCoords = this.editPolyline.coords;
 
-      let existingLine = this.polylines.find((item) => item.id === id);
-
       if (arrCoords.length > 1) {
-        // если редактировали существующую линию
-        if (existingLine) {
-          existingLine = this.editPolyline;
-        }
-        else {
-          // если новая линия
-          this.polylines.push(this.editPolyline);
-        }
+          let existingLine = this.polylines.find((item) => item.id === id);
+          if (existingLine) {
+            // если редактировали существующую линию
+            existingLine = this.editPolyline;
+          }
+          else {
+            // если новая линия
+            this.polylines.push(this.editPolyline);
+          }
       }
-console.log(this.polylines);
+      console.log(this.polylines);
       this.turnOffLineDrawing();
     }
   }
