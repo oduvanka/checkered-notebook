@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DataService } from '../data.service';
 import { Polyline } from '../polyline';
 
@@ -24,6 +24,7 @@ export class DrawComponent implements OnInit {
   public polygons: Object[];
   // новые фигуры
   @Input() editPolyline: Polyline;
+  @Output() editPolylineChange = new EventEmitter<Polyline>();
   @Input() polylines: Polyline[];
   @Input() isEditLine: boolean;
   private defaultColorPolyline: string;
@@ -119,7 +120,7 @@ export class DrawComponent implements OnInit {
       const isRepeating = arrCoords.find((item) => (item[0] === cxEl && item[1] === cyEl));
       
       if (isRepeating) {
-        alert("Линия уже проходит через эту точку");
+        console.log("Линия уже проходит через эту точку");
       }
       else {
         // удаляем временную точку, которая добавлялась при mouseMove
@@ -243,6 +244,7 @@ export class DrawComponent implements OnInit {
     this.isEditLine = false;
     this.editPolyline = {id: "-", coords: [], color: ""};
     this.lengthCoordsEditPolyline = 0;
+    this.editPolylineChange.emit(this.editPolyline);
 
     setTimeout(() => {
       /* Переместим все polyline до circle, чтобы на холсте circle ничего не перекрывало */
@@ -264,5 +266,6 @@ export class DrawComponent implements OnInit {
     this.isEditLine = true;
     const coords = this.editPolyline.coords;
     this.lengthCoordsEditPolyline = coords.length;
+    this.editPolylineChange.emit(this.editPolyline);
   }
 }
