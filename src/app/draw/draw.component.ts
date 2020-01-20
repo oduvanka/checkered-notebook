@@ -30,7 +30,7 @@ export class DrawComponent implements OnInit {
   @Output() isEditLineToogle = new EventEmitter<boolean>();
   private defaultColorPolyline: string;
   private transparencyColorPolyline: number;
-  public nFixedPolylinePoints: number; // кол-во зафиксированных точек в редактируемой полилинии
+  private nFixedPolylinePoints: number; // кол-во зафиксированных точек в редактируемой полилинии
 
   constructor( public _dataService: DataService ) { }
 
@@ -210,7 +210,7 @@ export class DrawComponent implements OnInit {
     return result
   }
 
-  private convertRgbToStrRgba(hex: string):string {
+  public convertRgbToStrRgba(hex: string):string {
     /* Так как для svg не удаётся пока что задать стили, 
     то в html-шаблонe сделаем polyline прозрачной с помощью rgba-цвета  */
 
