@@ -12,6 +12,7 @@ export class PolylineListComponent implements OnInit {
   @Input() selectedPolyline: Polyline;
   @Output() selectedPolylineChange = new EventEmitter<Polyline>();
   @Input() isEditLine: boolean;
+  @Output() isEditLineToogle = new EventEmitter<boolean>();
 
   constructor() { }
 
@@ -19,12 +20,15 @@ export class PolylineListComponent implements OnInit {
   }
 
   onSelectPolyline(polyline: Polyline): void {
-    console.log("list");
-    console.log("select polyline N", polyline.id, polyline.color);
-    console.log(this.polylines);
-    this.selectedPolyline = polyline;
+    this.selectedPolyline = {
+      id: polyline.id,
+      coords: [...polyline.coords],
+      color: polyline.color
+    }
     this.isEditLine = true;
+    
     this.selectedPolylineChange.emit(this.selectedPolyline);
+    this.isEditLineToogle.emit(this.isEditLine);
   }
 
   deletePolyline(polyline: Polyline): void {}

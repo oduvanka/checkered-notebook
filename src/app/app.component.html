@@ -10,15 +10,17 @@
   <app-draw 
     [(polylines)]="polylines"
     [editablePolyline]="selectedPolyline" (editablePolylineChange)="selectedPolyline=$event"
-    [(isEditLine)]="isEditPolyLine" >
+    [isEditLine]="isEditPolyLine" (isEditLineToogle)="isEditPolyLine=$event" >
   </app-draw>
 
   <app-polyline-list 
     *ngIf="polylines.length" 
     [(polylines)]="polylines" 
     [selectedPolyline]="selectedPolyline" (selectedPolylineChange)="selectedPolyline=$event"
-    [(isEditLine)]="isEditPolyLine" >
+    [isEditLine]="isEditPolyLine" (isEditLineToogle)="isEditPolyLine=$event" >
   </app-polyline-list>
+
+  <p *ngIf="isEditPolyLine">!</p>
 
   <!--<app-polilyne-editor></app-polilyne-editor>-->
 
