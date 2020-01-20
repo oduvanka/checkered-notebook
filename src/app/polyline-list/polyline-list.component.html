@@ -1,6 +1,6 @@
 <p>Список линий:</p>
 <ul>
-  <li  *ngFor="let polyline of polylines" (click)="onSelect(polyline)">
+  <li  *ngFor="let polyline of polylines" (click)="onSelectPolyline(polyline)">
     <a href="#">
       <span *ngIf="polyline.id === selectedPolyline.id">(V) </span>
       <span>N{{polyline.id}}</span> точки:<span>{{polyline.coords}}</span> цвет:<span>{{polyline.color}}</span>
