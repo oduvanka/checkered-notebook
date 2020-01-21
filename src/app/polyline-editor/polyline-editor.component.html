@@ -1,0 +1,20 @@
+<section>
+  <h2>Линия №{{polyline.id}} {{polyline.color}}</h2>
+  <form>
+    <div>
+      <label>Точки:</label>
+      <div>
+        {{polyline.coords}}
+      </div>
+    </div>
+    <div>
+      <app-color-picker 
+        [currentColor]="polyline.color"
+        (currentColorChange)="polyline.color=$event" >
+      </app-color-picker>
+    </div>
+    <button type="submit">Сохранить</button>
+  </form>
+</section>
+
+<!---->

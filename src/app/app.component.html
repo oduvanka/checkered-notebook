@@ -1,11 +1,9 @@
 <div>
-  <p>Тест библиотеки рисования</p>
-  <a 
-    href="https://www.npmjs.com/package/ngx-svg" 
-    target="_blank" rel="noopener noreferrer"
-  >
-    ngx-svg
-  </a>
+  <p>Тест библиотеки рисования 
+    <a href="https://www.npmjs.com/package/ngx-svg" target="_blank" rel="noopener noreferrer" >
+      ngx-svg
+    </a>
+  </p>
 
   <app-draw 
     [(polylines)]="polylines"
@@ -20,8 +18,10 @@
     [isEditLine]="isEditPolyLine" (isEditLineToogle)="isEditPolyLine=$event" >
   </app-polyline-list>
 
-  <app-polilyne-editor 
-    *ngIf="isEditLine" >
-  </app-polilyne-editor>
+  <app-polyline-editor 
+    *ngIf="selectedPolyline.id !== '-'" 
+    [polyline]="selectedPolyline" (polylineChange)="selectedPolyline=$event"
+    [isEditLine]="isEditPolyLine" (isEditLineToogle)="isEditPolyLine=$event" >
+  </app-polyline-editor>
 
 </div>

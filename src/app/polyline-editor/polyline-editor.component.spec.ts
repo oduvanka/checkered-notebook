@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PolilyneEditorComponent } from './polilyne-editor.component';
+import { PolylineEditorComponent } from './polyline-editor.component';
 
 describe('PolilyneEditorComponent', () => {
-  let component: PolilyneEditorComponent;
-  let fixture: ComponentFixture<PolilyneEditorComponent>;
+  let component: PolylineEditorComponent;
+  let fixture: ComponentFixture<PolylineEditorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PolilyneEditorComponent ]
+      declarations: [ PolylineEditorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PolilyneEditorComponent);
+    fixture = TestBed.createComponent(PolylineEditorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
