@@ -31,6 +31,9 @@ export class PolylineListComponent implements OnInit {
     this.isEditLineToogle.emit(this.isEditLine);
   }
 
-  deletePolyline(polyline: Polyline): void {}
+  deletePolyline(polyline: Polyline): void {
+    const currentIndex = this.polylines.findIndex((item) => item.id === polyline.id);
+    if (currentIndex !== -1) this.polylines.splice(currentIndex, 1);
+  }
 
 }

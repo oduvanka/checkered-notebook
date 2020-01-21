@@ -20,8 +20,8 @@
     [isEditLine]="isEditPolyLine" (isEditLineToogle)="isEditPolyLine=$event" >
   </app-polyline-list>
 
-  <p *ngIf="isEditPolyLine">!</p>
-
-  <!--<app-polilyne-editor></app-polilyne-editor>-->
+  <app-polilyne-editor 
+    *ngIf="isEditLine" >
+  </app-polilyne-editor>
 
 </div>
