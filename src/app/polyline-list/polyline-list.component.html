@@ -13,6 +13,7 @@
         <div class="color-polyline">
           <app-color-picker 
             [currentColor]="polyline.color"
+            [isDisabled]="true"
             (currentColorChange)="polyline.color=$event" >
           </app-color-picker>
         </div>

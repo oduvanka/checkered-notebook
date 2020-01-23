@@ -9,6 +9,7 @@ export class ColorPickerComponent implements OnInit {
 
   @Input() currentColor: string;
   @Output() currentColorChange = new EventEmitter<string>();
+  @Input() isDisabled: boolean;
 
   constructor() { }
 
