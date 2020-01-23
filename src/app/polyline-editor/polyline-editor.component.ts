@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { Polyline } from '../polyline';
 
 @Component({
@@ -16,6 +16,22 @@ export class PolylineEditorComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  ngOnChanges() {
+    console.log(this.polyline);
+  }
+
+  onSubmit(evt) {
+    evt.preventDefault();
+    this.polylineChange.emit(this.polyline);
+    this.isEditLineToogle.emit(false);
+  }
+
+  deleteCoord(index) {
+    console.log("deleteCoord");
+    let coords = this.polyline.coords;
+    coords.splice(index, 1);
   }
 
 }

@@ -1,11 +1,19 @@
 <section>
   <h2>Линия №{{polyline.id}} {{polyline.color}}</h2>
-  <form>
+  <form (submit)="onSubmit($event)">
     <div>
       <label>Точки:</label>
-      <div>
-        {{polyline.coords | coords}}
-      </div>
+      <ul>
+        <li *ngFor="let coord of polyline.coords; let i = index">
+          {{coord}} 
+          <button 
+            *ngIf="(polyline.coords.length > 2) && (i === 0 || i === polyline.coords.length-1)" 
+            title="Удалить координату" 
+            (click)="deleteCoord(i)">
+            x
+          </button>
+        </li>
+      </ul>
     </div>
     <div>
       <app-color-picker 
@@ -16,5 +24,3 @@
     <button type="submit">Сохранить</button>
   </form>
 </section>
-
-<!---->
