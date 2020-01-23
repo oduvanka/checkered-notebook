@@ -8,6 +8,7 @@ import { DrawComponent } from './draw/draw.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { PolylineEditorComponent } from './polyline-editor/polyline-editor.component';
 import { PolylineListComponent } from './polyline-list/polyline-list.component';
+import { CoordsPipe } from './coords.pipe';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { PolylineListComponent } from './polyline-list/polyline-list.component';
     DrawComponent,
     ColorPickerComponent,
     PolylineEditorComponent,
-    PolylineListComponent
+    PolylineListComponent,
+    CoordsPipe
   ],
   imports: [
     BrowserModule,

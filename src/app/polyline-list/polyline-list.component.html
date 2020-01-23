@@ -4,7 +4,7 @@
     <li  *ngFor="let polyline of polylines" >
       <a href="#" (click)="onSelectPolyline(polyline)">
         <span *ngIf="polyline.id === selectedPolyline.id">(V) </span>
-        <span>N{{polyline.id}}</span> точки:<span>{{polyline.coords}}</span> цвет:<span>{{polyline.color}}</span>
+        <span>N{{polyline.id}}</span> точки: <span>{{polyline.coords | coords}}</span> цвет: <span>{{polyline.color}}</span>
       </a>
       <button title="delete hero" (click)="deletePolyline(polyline)">x</button>
     </li>
