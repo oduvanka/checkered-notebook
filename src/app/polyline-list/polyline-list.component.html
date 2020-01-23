@@ -1,12 +1,23 @@
 <section>
   <h2>Список линий</h2>
-  <ul>
-    <li  *ngFor="let polyline of polylines" >
-      <a href="#" (click)="onSelectPolyline(polyline)">
-        <span *ngIf="polyline.id === selectedPolyline.id">(V) </span>
-        <span>N{{polyline.id}}</span> точки: <span>{{polyline.coords | coords}}</span> цвет: <span>{{polyline.color}}</span>
-      </a>
-      <button title="delete hero" (click)="deletePolyline(polyline)">x</button>
+  <ul class="polylines">
+    <li *ngFor="let polyline of polylines" class="polyline" (click)="onSelectPolyline(polyline)">
+      <div class="check-polyline">
+        <span *ngIf="polyline.id === selectedPolyline.id">></span>
+      </div>
+      <div class="info-polyline">
+        <div class="index-polyline">{{polyline.id}}</div>
+        <div class="coords-polyline">
+          <span>Точки: </span><span>{{polyline.coords | coords}}</span>
+        </div>
+        <div class="color-polyline">
+          <app-color-picker 
+            [currentColor]="polyline.color"
+            (currentColorChange)="polyline.color=$event" >
+          </app-color-picker>
+        </div>
+      </div>
+      <button class="btn-polyline" title="Удалить линию" (click)="deletePolyline(polyline)">x</button>
     </li>
   </ul>
 </section>

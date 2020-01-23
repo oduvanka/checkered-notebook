@@ -1,0 +1,40 @@
+.polylines {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.polyline {
+  display: flex;
+  min-height: 32px;
+  margin-bottom: 1px;
+
+  line-height: 32px;
+
+  background-color: #EEEEEE;
+}
+
+.check-polyline {
+  width: 10px;
+  margin-right: 10px;
+  padding-right: 5px;
+  padding-left: 5px;
+
+  background-color: #CCCCCC;
+}
+
+.info-polyline {
+  display: flex;
+  margin-right: 20px;
+}
+
+.index-polyline {
+  min-width: 20px;
+  margin-right: 5px;
+
+  color: #999999;
+}
+
+.coords-polyline {
+  margin-right: 20px;
+}
