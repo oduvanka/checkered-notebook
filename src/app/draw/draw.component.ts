@@ -49,9 +49,10 @@ export class DrawComponent implements OnInit {
 
     this.borderSize = 3;
     
-    const dataPoints = this._dataService.getDataPoints();
-    this.points = this.createArrOfPointsVsLabels(dataPoints);
-    this.polygons = this._dataService.getDataPolygons();
+    this._dataService.getDataPoints()
+      .subscribe(dataPoints => this.points = this.createArrOfPointsVsLabels(dataPoints));
+    this._dataService.getDataPolygons()
+      .subscribe(dataPolygons => this.polygons = dataPolygons);
 
     this.defaultColorPolyline = "#000000";
     this.transparencyColorPolyline = 0.5;

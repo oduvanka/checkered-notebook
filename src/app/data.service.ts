@@ -4,6 +4,7 @@ import { POINTS } from './mock-data/mock-points';
 import { POLYGONS } from './mock-data/mock-polygons';
 import { Polygon } from './polygon';
 import { Point } from './point';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +16,11 @@ export class DataService {
 
   constructor() { }
 
-  getDataPoints(): Point[] {
-    return this.dataPoints;
+  getDataPoints(): Observable<Point[]> {
+    return of(this.dataPoints);
   }
 
-  getDataPolygons(): Polygon[] {
-    return this.dataPoligons;
+  getDataPolygons(): Observable<Polygon[]> {
+    return of(this.dataPoligons);
   }
 }
