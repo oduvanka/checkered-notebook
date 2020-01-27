@@ -28,14 +28,6 @@
     (mouseOutEvent)="onMouseOutPolyline()" >
   </svg-polyline>
 
-  <svg-polyline
-    *ngIf="isEditLine"
-    points={{editablePolyline.coords}}
-    fill="none"
-    [borderSize]="borderSize"
-    borderColor={{editablePolyline.color}} >
-  </svg-polyline>
-
   <svg-circle
     *ngFor="let item of points"
     [radius]="rCircle"

@@ -22,12 +22,18 @@ export class DrawComponent implements OnInit {
   // имеющиеся фигуры
   public points: Object[];
   public polygons: Object[];
+
   // новые фигуры
   @Input() polylines: Polyline[];
-  @Input() editablePolyline: Polyline;
+
+  @Input() editablePolyline: Polyline; // ссылка на редактируемый элемент массива polylines
+  private editablePolylineCopyBefore: Polyline; // копия редактируемого элемента массива, для отмены изменений
   @Output() editablePolylineChange = new EventEmitter<Polyline>();
+
+  private isNewLine: boolean;
   @Input() isEditLine: boolean;
   @Output() isEditLineToogle = new EventEmitter<boolean>();
+
   private defaultColorPolyline: string;
   private transparencyColorPolyline: number;
   private nFixedPolylinePoints: number; // кол-во зафиксированных точек в редактируемой полилинии
@@ -65,8 +71,13 @@ export class DrawComponent implements OnInit {
     //console.log("click canvas");
     if (!this.isEditLine) return;
 
-    let currentCoords = this.editablePolyline.coords;
-    currentCoords.pop();
+    if (this.isNewLine) {
+      this.polylines.pop();
+    }
+    else {
+      Object.assign(this.editablePolyline, this.editablePolylineCopyBefore);
+    }
+    
     this.turnOffLineDrawing();
   }
 
@@ -74,8 +85,13 @@ export class DrawComponent implements OnInit {
     //console.log("2-click canvas");
     if (!this.isEditLine) return;
 
-    let currentCoords = this.editablePolyline.coords;
-    currentCoords.pop();
+    if (this.isNewLine) {
+      this.polylines.pop();
+    }
+    else {
+      Object.assign(this.editablePolyline, this.editablePolylineCopyBefore);
+    }
+    
     this.turnOffLineDrawing();
   }
 
@@ -111,51 +127,39 @@ export class DrawComponent implements OnInit {
     const cxEl = attrEl.getNamedItem('cx').value;
     const cyEl = attrEl.getNamedItem('cy').value;
 
-    if (this.isEditLine) {
+    if (!this.isEditLine) {
+      // создаём новую polyline
+      this.isNewLine = true;
+      const newId = this.polylines.length.toString();
+      const newLine = {
+        id: newId, 
+        coords: [[cxEl, cyEl]], 
+        color: this.defaultColorPolyline
+      };
+      this.polylines.push(newLine);
+      const existingLine = this.polylines.find((item) => item.id === newId);
+      this.turnOnLineDrawing(existingLine);
+    }
+    else {
       // продолжаем начатую polyline
-      let currentCoords = this.editablePolyline.coords;
+      let currentCoords = [...this.editablePolyline.coords];
       const isRepeating = currentCoords.find((item) => (item[0] === cxEl && item[1] === cyEl));
       
-      if (isRepeating) {
-        //console.log("Линия уже проходит через эту точку");
-      }
-      else {
+      if (!isRepeating) {
         // удаляем временную точку, которая добавлялась при mouseMove
         currentCoords.pop();
         currentCoords.push([cxEl, cyEl]);
-        this.nFixedPolylinePoints++;
+
+        Object.assign(this.editablePolyline, {coords: currentCoords});
+        this.turnOnLineDrawing(this.editablePolyline);
       }
-    }
-    else {
-      this.turnOnLineDrawing();
-      // создаём первую точку новой polyline
-      const id = this.polylines.length + "";
-      const coords = [[cxEl, cyEl]];
-      const color = this.defaultColorPolyline;
-      this.editablePolyline = {id, coords, color};
-      this.nFixedPolylinePoints = 1;
     }
   }
 
   onDoubleClickCircle(evt) {
     //console.log("2-click circle");
     if (!this.isEditLine) return;
-
-    // завершаем начатую ранее polyline
-    const lengthCurrentPolyline = this.editablePolyline.coords.length;
-
-    if (lengthCurrentPolyline > 1) {
-      const currentId = this.editablePolyline.id;
-      let existingLine = this.polylines.find((item) => item.id === currentId);
-      if (existingLine) {
-        // если редактировали существующую линию
-        Object.assign(existingLine, this.editablePolyline);
-      }
-      else {
-        // если новая линия
-        this.polylines.push(this.editablePolyline);
-      }
-    }
+    if (this.editablePolyline.coords.length < 2) return;
     this.turnOffLineDrawing();
   }
 
@@ -176,18 +180,15 @@ export class DrawComponent implements OnInit {
     const points = attr.getNamedItem("points");
     const strPoints = points.value;
 
-    const currentPolyline = this.polylines.find((item) => {
-      const strCoords = item.coords.join(',');
-      if (strPoints === strCoords) return item;
-    });
+    const currentLine = this.polylines.find((item) => strPoints === item.coords.join(','));
 
-    this.editablePolyline = {
-      id: currentPolyline.id,
-      coords: [...currentPolyline.coords],
-      color: currentPolyline.color
+    this.editablePolylineCopyBefore = {
+      id: currentLine.id,
+      coords: [...currentLine.coords],
+      color: currentLine.color
     }
 
-    this.turnOnLineDrawing();
+    this.turnOnLineDrawing(currentLine);
   }
   
   onMouseOverPolyline() {
@@ -249,8 +250,10 @@ export class DrawComponent implements OnInit {
   }
 
   private turnOffLineDrawing() {
+    this.isNewLine = false;
     this.isEditLine = false;
     this.editablePolyline = {id: "-", coords: [], color: ""};
+    this.editablePolylineCopyBefore = {id: "-", coords: [], color: ""};
     this.nFixedPolylinePoints = 0;
 
     this.editablePolylineChange.emit(this.editablePolyline);
@@ -272,9 +275,10 @@ export class DrawComponent implements OnInit {
     }, 100);
     
   }
-  private turnOnLineDrawing() {
+  private turnOnLineDrawing(currentLine: Polyline) {
     this.isEditLine = true;
-    this.nFixedPolylinePoints = this.editablePolyline.coords.length;
+    this.editablePolyline = currentLine;
+    this.nFixedPolylinePoints = currentLine.coords.length;
 
     this.editablePolylineChange.emit(this.editablePolyline);
     this.isEditLineToogle.emit(this.isEditLine);
