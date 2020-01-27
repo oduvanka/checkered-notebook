@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { POINTS } from './mock-data/mock-points';
 import { POLYGONS } from './mock-data/mock-polygons';
+import { Polygon } from './polygon';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class DataService {
     return this.dataPoints;
   }
 
-  getDataPolygons() {
+  getDataPolygons(): Polygon[] {
     return this.dataPoligons;
   }
 }
