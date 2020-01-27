@@ -14,9 +14,12 @@ export class PolylineListComponent implements OnInit {
   @Input() isEditLine: boolean;
   @Output() isEditLineToogle = new EventEmitter<boolean>();
 
+  public isDisabledColorPicker: boolean;
+
   constructor() { }
 
   ngOnInit() {
+    this.isDisabledColorPicker = false;
   }
 
   onSelectPolyline(polyline: Polyline): void {
