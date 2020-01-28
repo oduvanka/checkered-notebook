@@ -23,11 +23,7 @@ export class PolylineListComponent implements OnInit {
   }
 
   onSelectPolyline(polyline: Polyline): void {
-    this.selectedPolyline = {
-      id: polyline.id,
-      coords: [...polyline.coords],
-      color: polyline.color
-    }
+    this.selectedPolyline = polyline;
     this.isEditLine = true;
     
     this.selectedPolylineChange.emit(this.selectedPolyline);
@@ -37,6 +33,12 @@ export class PolylineListComponent implements OnInit {
   deletePolyline(polyline: Polyline): void {
     const currentIndex = this.polylines.findIndex((item) => item.id === polyline.id);
     if (currentIndex !== -1) this.polylines.splice(currentIndex, 1);
+
+    this.selectedPolyline = {id: "-", coords: [], color: ""};
+    this.isEditLine = false;
+    
+    this.selectedPolylineChange.emit(this.selectedPolyline);
+    this.isEditLineToogle.emit(this.isEditLine);
   }
 
 }
