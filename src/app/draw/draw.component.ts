@@ -41,6 +41,7 @@ export class DrawComponent implements OnInit {
   constructor( public _dataService: DataService ) { }
 
   ngOnInit() {
+    //console.log("ngOnInit");
     this.height = 300;
     this.isShowGrid = true;
     /* isHoverable
@@ -63,6 +64,10 @@ export class DrawComponent implements OnInit {
     this.defaultColorPolyline = "#000000";
     this.transparencyColorPolyline = 0.5;
     this.turnOffLineDrawing();
+  }
+
+  ngOnChanges() {
+    //console.log("ngOnChanges");
   }
 
   /* СОБЫТИЯ ХОЛСТА */
@@ -201,6 +206,22 @@ export class DrawComponent implements OnInit {
 
   /* ПРОЧИЕ ФУНКЦИИ */
 
+  public getPolylineBorderSize(id: string, hex: string):number {
+    /* Если рисуется редактируемая линия - для неё вернётся более толстая граница */
+
+    const result = (this.isEditLine && id === this.editablePolyline.id) ? this.borderSize + 2 : this.borderSize;
+
+    return result;
+  }
+
+  public getPolylineBorderColor(id: string, hex: string):string {
+    /* Если рисуется редактируемая линия - для неё вернётся цвет без прозрачности */
+
+    const result = (this.isEditLine && id === this.editablePolyline.id) ? hex : this.convertRgbToStrRgba(hex);
+
+    return result;
+  }
+
   private convertHexToRgb(hex: string) {
     const regexp = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     const result = regexp ? {
@@ -212,7 +233,7 @@ export class DrawComponent implements OnInit {
     return result
   }
 
-  public convertRgbToStrRgba(hex: string):string {
+  private convertRgbToStrRgba(hex: string):string {
     /* Так как для svg не удаётся пока что задать стили, 
     то в html-шаблонe сделаем polyline прозрачной с помощью rgba-цвета  */
 

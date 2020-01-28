@@ -21,8 +21,8 @@
     *ngFor="let item of polylines"
     points={{item.coords}}
     fill="none"
-    [borderSize]="borderSize"
-    borderColor={{convertRgbToStrRgba(item.color)}} 
+    borderSize={{getPolylineBorderSize(item.id,item.color)}} 
+    borderColor={{getPolylineBorderColor(item.id,item.color)}} 
     (clickEvent)="onClickPolyline($event)" 
     (mouseOverEvent)="onMouseOverPolyline()"
     (mouseOutEvent)="onMouseOutPolyline()" >
