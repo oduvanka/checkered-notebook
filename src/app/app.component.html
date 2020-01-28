@@ -7,15 +7,25 @@
 
   <app-draw 
     [(polylines)]="polylines"
-    [editablePolyline]="selectedPolyline" (editablePolylineChange)="selectedPolyline=$event"
-    [isEditLine]="isEditPolyLine" (isEditLineToogle)="isEditPolyLine=$event" >
+    [isEditLine]="isEditPolyLine" 
+    [editablePolyline]="selectedPolyline" 
+    [editablePolylineCopyBefore]="selectedPolylineCopyBefore"
+    (isEditLineToogle)="isEditPolyLine=$event"
+    (editablePolylineChange)="selectedPolyline=$event" 
+    (editablePolylineCopyBeforeChange)="selectedPolylineCopyBefore=$event" 
+  >
   </app-draw>
 
   <app-polyline-list 
     *ngIf="polylines.length" 
     [(polylines)]="polylines" 
-    [selectedPolyline]="selectedPolyline" (selectedPolylineChange)="selectedPolyline=$event"
-    [isEditLine]="isEditPolyLine" (isEditLineToogle)="isEditPolyLine=$event" >
+    [isEditLine]="isEditPolyLine" 
+    [selectedPolyline]="selectedPolyline" 
+    [selectedPolylineCopyBefore]="selectedPolylineCopyBefore"
+    (isEditLineToogle)="isEditPolyLine=$event"
+    (selectedPolylineChange)="selectedPolyline=$event" 
+    (selectedPolylineCopyBeforeChange)="selectedPolylineCopyBefore=$event" 
+  >
   </app-polyline-list>
 
 </div>

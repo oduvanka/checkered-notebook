@@ -27,8 +27,9 @@ export class DrawComponent implements OnInit {
   @Input() polylines: Polyline[];
 
   @Input() editablePolyline: Polyline; // ссылка на редактируемый элемент массива polylines
-  private editablePolylineCopyBefore: Polyline; // копия редактируемого элемента массива, для отмены изменений
+  @Input() editablePolylineCopyBefore: Polyline; // копия редактируемого элемента массива, для отмены изменений
   @Output() editablePolylineChange = new EventEmitter<Polyline>();
+  @Output() editablePolylineCopyBeforeChange = new EventEmitter<Polyline>();
 
   private isNewLine: boolean;
   @Input() isEditLine: boolean;
@@ -278,6 +279,7 @@ export class DrawComponent implements OnInit {
     this.nFixedPolylinePoints = 0;
 
     this.editablePolylineChange.emit(this.editablePolyline);
+    this.editablePolylineCopyBeforeChange.emit(this.editablePolylineCopyBefore);
     this.isEditLineToogle.emit(this.isEditLine);
 
     setTimeout(() => {
@@ -302,6 +304,7 @@ export class DrawComponent implements OnInit {
     this.nFixedPolylinePoints = currentLine.coords.length;
 
     this.editablePolylineChange.emit(this.editablePolyline);
+    this.editablePolylineCopyBeforeChange.emit(this.editablePolylineCopyBefore);
     this.isEditLineToogle.emit(this.isEditLine);
   }
 }
