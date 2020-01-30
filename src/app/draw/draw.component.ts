@@ -148,16 +148,14 @@ export class DrawComponent implements OnInit {
     }
     else {
       // продолжаем начатую polyline
-      let currentCoords = [...this.editablePolyline.coords];
+      let currentCoords = this.editablePolyline.coords;
       const isRepeating = currentCoords.find((item) => (item[0] === cxEl && item[1] === cyEl));
       
       if (!isRepeating) {
         // удаляем временную точку, которая добавлялась при mouseMove
         currentCoords.pop();
         currentCoords.push([cxEl, cyEl]);
-
-        Object.assign(this.editablePolyline, {coords: currentCoords});
-        this.turnOnLineDrawing(this.editablePolyline);
+        this.nFixedPolylinePoints++;
       }
     }
   }

@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'coords'
+  name: 'coords',
+  pure: false
 })
 export class CoordsPipe implements PipeTransform {
 
