@@ -1,2 +1,2 @@
-<label>Цвет: </label>
+<label *ngIf="label">{{label}}</label>
 <input class="input-color" type="color" [value]="currentColor" (change)="onChange($event)" [disabled]="isDisabled"/>

@@ -7,6 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ColorPickerComponent implements OnInit {
 
+  @Input() label: string;
   @Input() currentColor: string;
   @Output() currentColorChange = new EventEmitter<string>();
   @Input() isDisabled: boolean;

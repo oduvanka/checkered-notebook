@@ -43,14 +43,16 @@
 
 .index-polyline {
   min-width: 20px;
-  margin-right: 5px;
 
   color: #999999;
 }
 
+.color-polyline {
+  margin-right: 20px;
+}
+
 .coords-polyline {
   display: flex;
-  margin-right: 20px;
 }
 
 .coords-polyline p {

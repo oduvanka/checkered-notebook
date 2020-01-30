@@ -8,6 +8,14 @@
         </div>
         <div class="props-polyline">
           <div class="index-polyline">{{polyline.id}}</div>
+          <div class="color-polyline">
+            <app-color-picker 
+              stop-propagation-evt
+              [currentColor]="polyline.color"
+              [isDisabled]="isDisabledColorPicker"
+              (currentColorChange)="polyline.color=$event" >
+            </app-color-picker>
+          </div>
           <div class="coords-polyline">
             <p>Точки: <span>{{polyline.coords | coords}}</span></p>
             <div *ngIf="polyline.coords.length > 2" class="btns-coords-polyline">
@@ -18,13 +26,6 @@
                 x последнюю точку
               </button>
             </div>
-          </div>
-          <div class="color-polyline">
-            <app-color-picker 
-              [currentColor]="polyline.color"
-              [isDisabled]="isDisabledColorPicker"
-              (currentColorChange)="polyline.color=$event" >
-            </app-color-picker>
           </div>
         </div>
       </div>
