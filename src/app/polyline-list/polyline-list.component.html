@@ -4,7 +4,7 @@
     <li *ngFor="let polyline of polylines" class="polyline" >
       <div class="info-polyline" (click)="onSelectPolyline(polyline)">
         <div class="check-polyline">
-          <span *ngIf="polyline.id === selectedPolyline.id"></span>
+          <div *ngIf="polyline.id === selectedPolyline.id" class="marker"></div>
         </div>
         <div class="props-polyline">
           <div class="index-polyline">{{polyline.id}}</div>

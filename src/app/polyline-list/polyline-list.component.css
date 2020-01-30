@@ -20,13 +20,22 @@
 }
 
 .check-polyline {
-  width: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
   margin-right: 10px;
-  padding-right: 5px;
-  padding-left: 5px;
 
   background-color: #CCCCCC;
 }
+
+.check-polyline .marker {
+  width: 10px;
+  height: 10px;
+
+  background-color: #666666;
+  border-radius: 25%;
+ }
 
 .props-polyline {
   display: flex;
