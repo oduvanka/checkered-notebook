@@ -14,6 +14,11 @@
   background-color: #EEEEEE;
 }
 
+.info-polyline {
+  display: flex;
+  flex-grow: 2;
+}
+
 .check-polyline {
   width: 10px;
   margin-right: 10px;
@@ -23,9 +28,8 @@
   background-color: #CCCCCC;
 }
 
-.info-polyline {
+.props-polyline {
   display: flex;
-  margin-right: 20px;
 }
 
 .index-polyline {
@@ -36,5 +40,15 @@
 }
 
 .coords-polyline {
+  display: flex;
   margin-right: 20px;
+}
+
+.coords-polyline p {
+  margin: 0;
+  padding: 0;
+}
+
+.btns-coords-polyline {
+  margin-left: 10px;
 }

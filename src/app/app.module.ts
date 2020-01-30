@@ -8,6 +8,7 @@ import { DrawComponent } from './draw/draw.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { PolylineListComponent } from './polyline-list/polyline-list.component';
 import { CoordsPipe } from './coords.pipe';
+import { ClickStopPropagationDirective } from './click-stop-propagation.directive';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { CoordsPipe } from './coords.pipe';
     DrawComponent,
     ColorPickerComponent,
     PolylineListComponent,
-    CoordsPipe
+    CoordsPipe,
+    ClickStopPropagationDirective
   ],
   imports: [
     BrowserModule,

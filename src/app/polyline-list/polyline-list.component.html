@@ -1,24 +1,34 @@
 <section>
   <h2>Список линий</h2>
   <ul class="polylines">
-    <li *ngFor="let polyline of polylines" class="polyline" (click)="onSelectPolyline(polyline)">
-      <div class="check-polyline">
-        <span *ngIf="polyline.id === selectedPolyline.id">></span>
-      </div>
-      <div class="info-polyline">
-        <div class="index-polyline">{{polyline.id}}</div>
-        <div class="coords-polyline">
-          <span>Точки: </span><span>{{polyline.coords | coords}}</span>
+    <li *ngFor="let polyline of polylines" class="polyline" >
+      <div class="info-polyline" (click)="onSelectPolyline(polyline)">
+        <div class="check-polyline">
+          <span *ngIf="polyline.id === selectedPolyline.id"></span>
         </div>
-        <div class="color-polyline">
-          <app-color-picker 
-            [currentColor]="polyline.color"
-            [isDisabled]="isDisabledColorPicker"
-            (currentColorChange)="polyline.color=$event" >
-          </app-color-picker>
+        <div class="props-polyline">
+          <div class="index-polyline">{{polyline.id}}</div>
+          <div class="coords-polyline">
+            <p>Точки: <span>{{polyline.coords | coords}}</span></p>
+            <div *ngIf="polyline.coords.length > 2" class="btns-coords-polyline">
+              <button stop-propagation-evt title="Удалить первую точку" (click)="deleteFirstCoord(polyline)">
+                x первую точку
+              </button>
+              <button stop-propagation-evt title="Удалить первую точку" (click)="deleteLastCoord(polyline)">
+                x последнюю точку
+              </button>
+            </div>
+          </div>
+          <div class="color-polyline">
+            <app-color-picker 
+              [currentColor]="polyline.color"
+              [isDisabled]="isDisabledColorPicker"
+              (currentColorChange)="polyline.color=$event" >
+            </app-color-picker>
+          </div>
         </div>
       </div>
-      <button class="btn-polyline" title="Удалить линию" (click)="deletePolyline(polyline)">x</button>
+      <button class="btn-polyline" title="Удалить линию" (click)="deletePolyline(polyline)">x линию</button>
     </li>
   </ul>
 </section>
