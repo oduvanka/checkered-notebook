@@ -172,6 +172,8 @@ export class DrawComponent implements OnInit {
   /* СОБЫТИЯ ЛИНИИ */
 
   onClickPolyline(evt) {
+    if (this.isEditLine) this.breakPolyline();
+    
     const polyline = evt.target;
     const attr = polyline.attributes;
     const points = attr.getNamedItem("points");
