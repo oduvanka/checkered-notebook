@@ -67,38 +67,18 @@ export class DrawComponent implements OnInit {
     this.turnOffLineDrawing();
   }
 
-  ngOnChanges() {
-    //console.log("ngOnChanges");
-  }
+  ngOnChanges() { }
 
   /* СОБЫТИЯ ХОЛСТА */
 
   onClick(evt) {
-    //console.log("click canvas");
     if (!this.isEditLine) return;
-
-    if (this.isNewLine) {
-      this.polylines.pop();
-    }
-    else {
-      Object.assign(this.editablePolyline, this.editablePolylineCopyBefore);
-    }
-    
-    this.turnOffLineDrawing();
+    this.breakPolyline();
   }
 
   onDoubleClick(evt) {
-    //console.log("2-click canvas");
     if (!this.isEditLine) return;
-
-    if (this.isNewLine) {
-      this.polylines.pop();
-    }
-    else {
-      Object.assign(this.editablePolyline, this.editablePolylineCopyBefore);
-    }
-    
-    this.turnOffLineDrawing();
+    this.breakPolyline();
   }
 
   onMouseMove(evt) {
@@ -124,10 +104,14 @@ export class DrawComponent implements OnInit {
     currentCoords.push([cxEl, cyEl]);
   }
 
+  onMouseOut(evt) {
+    if (!this.isEditLine) return;
+    this.breakPolyline();
+  }
+
   /* СОБЫТИЯ ТОЧКИ */
 
   onClickCircle(evt) {
-    //console.log("click circle");
     const currentCircle = evt.target;
     const attrСurrentCircle = currentCircle.attributes;
     const cx = attrСurrentCircle.getNamedItem('cx').value;
@@ -167,14 +151,12 @@ export class DrawComponent implements OnInit {
   }
 
   onDoubleClickCircle(evt) {
-    //console.log("2-click circle");
     if (!this.isEditLine) return;
     if (this.editablePolyline.coords.length < 2) return;
     this.turnOffLineDrawing();
   }
 
   onMouseOverCircle(evt) {
-    //console.log("onMouseOverCircle");
     this.isHoverable = false;
 
     /* Переместим circle в конец дочерних элементов, чтобы на холсте он оказался выше всех */
@@ -190,7 +172,6 @@ export class DrawComponent implements OnInit {
   /* СОБЫТИЯ ЛИНИИ */
 
   onClickPolyline(evt) {
-    //console.log("click polyline");
     const polyline = evt.target;
     const attr = polyline.attributes;
     const points = attr.getNamedItem("points");
@@ -291,6 +272,20 @@ export class DrawComponent implements OnInit {
     }
 
     return svgContainer;
+  }
+
+  private breakPolyline() {
+    /* Прерывает рисование линии и возвращает её к состоянию до начала редактирования, 
+    если был клик по холсту или если курсор ушёл с холста */
+
+    if (this.isNewLine) {
+      this.polylines.pop();
+    }
+    else {
+      Object.assign(this.editablePolyline, this.editablePolylineCopyBefore);
+    }
+    
+    this.turnOffLineDrawing();
   }
 
   private turnOffLineDrawing() {
