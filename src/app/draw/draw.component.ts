@@ -128,10 +128,10 @@ export class DrawComponent implements OnInit {
 
   onClickCircle(evt) {
     //console.log("click circle");
-    const el = evt.target;
-    const attrEl = el.attributes;
-    const cxEl = attrEl.getNamedItem('cx').value;
-    const cyEl = attrEl.getNamedItem('cy').value;
+    const currentCircle = evt.target;
+    const attrСurrentCircle = currentCircle.attributes;
+    const cx = attrСurrentCircle.getNamedItem('cx').value;
+    const cy = attrСurrentCircle.getNamedItem('cy').value;
 
     if (!this.isEditLine) {
       // создаём новую polyline
@@ -139,22 +139,28 @@ export class DrawComponent implements OnInit {
       const newId = this.polylines.length.toString();
       const newLine = {
         id: newId, 
-        coords: [[cxEl, cyEl]], 
+        coords: [[cx, cy]], 
         color: this.defaultColorPolyline
       };
       this.polylines.push(newLine);
       const existingLine = this.polylines.find((item) => item.id === newId);
       this.turnOnLineDrawing(existingLine);
+
+      /* Переместим circle в конец дочерних элементов, чтобы на холсте он оказался выше всех */
+      let svgContainer = this.getSvgContainer();
+      if (svgContainer) {
+        setTimeout(() => { svgContainer.appendChild(currentCircle) }, 50)
+      }
     }
     else {
       // продолжаем начатую polyline
       let currentCoords = this.editablePolyline.coords;
-      const isRepeating = currentCoords.find((item) => (item[0] === cxEl && item[1] === cyEl));
+      const isRepeating = currentCoords.find((item) => (item[0] === cx && item[1] === cy));
       
       if (!isRepeating) {
         // удаляем временную точку, которая добавлялась при mouseMove
         currentCoords.pop();
-        currentCoords.push([cxEl, cyEl]);
+        currentCoords.push([cx, cy]);
         this.nFixedPolylinePoints++;
       }
     }
@@ -167,8 +173,14 @@ export class DrawComponent implements OnInit {
     this.turnOffLineDrawing();
   }
 
-  onMouseOverCircle() {
+  onMouseOverCircle(evt) {
+    //console.log("onMouseOverCircle");
     this.isHoverable = false;
+
+    /* Переместим circle в конец дочерних элементов, чтобы на холсте он оказался выше всех */
+    let svgContainer = this.getSvgContainer();
+    let currentCircle = evt.target;
+    if (svgContainer) svgContainer.appendChild(currentCircle);
   }
 
   onMouseOutCircle() {
@@ -269,6 +281,18 @@ export class DrawComponent implements OnInit {
     return newData;
   }
 
+  private getSvgContainer() {
+    /* Возвращает контейнер, в котором находятся нарисованные на холсте фигуры */
+    let svgContainer;
+    const container = document.getElementById("svg-element");
+    if (container) {
+      let svg = container.getElementsByTagName("svg");
+      svgContainer = svg[0];
+    }
+
+    return svgContainer;
+  }
+
   private turnOffLineDrawing() {
     this.isNewLine = false;
     this.isEditLine = false;
@@ -279,22 +303,6 @@ export class DrawComponent implements OnInit {
     this.editablePolylineChange.emit(this.editablePolyline);
     this.editablePolylineCopyBeforeChange.emit(this.editablePolylineCopyBefore);
     this.isEditLineToogle.emit(this.isEditLine);
-
-    setTimeout(() => {
-      /* Переместим все polyline до circle, чтобы на холсте circle ничего не перекрывало */
-      const container = document.getElementById("svg-element");
-      if (container) {
-        let svg = container.getElementsByTagName("svg");
-        let svgContainer = svg[0];
-        let firstCircle = svgContainer.querySelector("circle");
-        let polylines = svgContainer.querySelectorAll("polyline");
-
-        polylines.forEach((item) => {
-          svgContainer.insertBefore(item, firstCircle);
-        });
-      }
-    }, 100);
-    
   }
   private turnOnLineDrawing(currentLine: Polyline) {
     this.isEditLine = true;
