@@ -42,12 +42,11 @@ export class DrawComponent implements OnInit {
   constructor( public _dataService: DataService ) { }
 
   ngOnInit() {
-    //console.log("ngOnInit");
     this.height = 300;
     this.isShowGrid = true;
-    /* isHoverable
-    false - нет события клика по холсту, 
-    true - нет события клика любого эл-та, т.к. sizePoint (даже = 0) как бы перекрывает эл-т */
+    // isHoverable
+    // false - нет события клика по холсту, 
+    // true - нет события клика любого эл-та, т.к. sizePoint (даже = 0) как бы перекрывает эл-т
     this.isHoverable = true;
     this.sizePoint = 0;  
     
@@ -82,7 +81,6 @@ export class DrawComponent implements OnInit {
   }
 
   onMouseMove(evt) {
-    //console.log("mouse move canvas");
     if (!this.isEditLine) return;
 
     let currentCoords = this.editablePolyline.coords;
@@ -130,7 +128,7 @@ export class DrawComponent implements OnInit {
       const existingLine = this.polylines.find((item) => item.id === newId);
       this.turnOnLineDrawing(existingLine);
 
-      /* Переместим circle в конец дочерних элементов, чтобы на холсте он оказался выше всех */
+      // Переместим circle в конец дочерних элементов, чтобы на холсте он оказался выше всех
       let svgContainer = this.getSvgContainer();
       if (svgContainer) {
         setTimeout(() => { svgContainer.appendChild(currentCircle) }, 50)
@@ -139,27 +137,41 @@ export class DrawComponent implements OnInit {
     else {
       // продолжаем начатую polyline
       let currentCoords = this.editablePolyline.coords;
-      const isRepeating = currentCoords.find((item) => (item[0] === cx && item[1] === cy));
-      
-      if (!isRepeating) {
-        // удаляем временную точку, которая добавлялась при mouseMove
-        currentCoords.pop();
-        currentCoords.push([cx, cy]);
-        this.nFixedPolylinePoints++;
-      }
+
+      const indexPoint = this.getpolylinePointIndex(currentCoords, cx, cy);
+      // если точка с таким индексом есть - не поставим её
+      const isRepeatingPoint = (indexPoint > -1) ? true : false;
+      if (isRepeatingPoint) return;
+
+      // удаляем временную точку, которая добавлялась при mouseMove
+      currentCoords.pop();
+      currentCoords.push([cx, cy]);
+      this.nFixedPolylinePoints++;
     }
   }
 
   onDoubleClickCircle(evt) {
     if (!this.isEditLine) return;
     if (this.editablePolyline.coords.length < 2) return;
+
+    const currentCircle = evt.target;
+    const attrСurrentCircle = currentCircle.attributes;
+    const cx = attrСurrentCircle.getNamedItem('cx').value;
+    const cy = attrСurrentCircle.getNamedItem('cy').value;
+    let currentCoords = this.editablePolyline.coords;
+
+    const indexPoint = this.getpolylinePointIndex(currentCoords, cx, cy);
+    // если точка с таким индексом есть и она не первая - не поставим её
+    const isInnerPoint = (indexPoint > 0) ? true : false;
+    if (isInnerPoint) return;
+
     this.turnOffLineDrawing();
   }
 
   onMouseOverCircle(evt) {
     this.isHoverable = false;
 
-    /* Переместим circle в конец дочерних элементов, чтобы на холсте он оказался выше всех */
+    // Переместим circle в конец дочерних элементов, чтобы на холсте он оказался выше всех
     let svgContainer = this.getSvgContainer();
     let currentCircle = evt.target;
     if (svgContainer) svgContainer.appendChild(currentCircle);
@@ -173,7 +185,7 @@ export class DrawComponent implements OnInit {
 
   onClickPolyline(evt) {
     if (this.isEditLine) this.breakPolyline();
-    
+
     const polyline = evt.target;
     const attr = polyline.attributes;
     const points = attr.getNamedItem("points");
@@ -201,16 +213,14 @@ export class DrawComponent implements OnInit {
   /* ПРОЧИЕ ФУНКЦИИ */
 
   public getPolylineBorderSize(id: string, hex: string):number {
-    /* Если рисуется редактируемая линия - для неё вернётся более толстая граница */
-
+    // Если рисуется редактируемая линия - для неё вернётся более толстая граница
     const result = (this.isEditLine && id === this.editablePolyline.id) ? this.borderSize + 2 : this.borderSize;
 
     return result;
   }
 
   public getPolylineBorderColor(id: string, hex: string):string {
-    /* Если рисуется редактируемая линия - для неё вернётся цвет без прозрачности */
-
+    // Если рисуется редактируемая линия - для неё вернётся цвет без прозрачности
     const result = (this.isEditLine && id === this.editablePolyline.id) ? hex : this.convertRgbToStrRgba(hex);
 
     return result;
@@ -228,9 +238,8 @@ export class DrawComponent implements OnInit {
   }
 
   private convertRgbToStrRgba(hex: string):string {
-    /* Так как для svg не удаётся пока что задать стили, 
-    то в html-шаблонe сделаем polyline прозрачной с помощью rgba-цвета  */
-
+    // Так как для svg не удаётся пока что задать стили, 
+    // то в html-шаблонe сделаем polyline прозрачной с помощью rgba-цвета
     const rgb = this.convertHexToRgb(hex);
     const result = rgb ? "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + this.transparencyColorPolyline + ")" : hex;
 
@@ -265,7 +274,7 @@ export class DrawComponent implements OnInit {
   }
 
   private getSvgContainer() {
-    /* Возвращает контейнер, в котором находятся нарисованные на холсте фигуры */
+    // Возвращает контейнер, в котором находятся нарисованные на холсте фигуры
     let svgContainer;
     const container = document.getElementById("svg-element");
     if (container) {
@@ -276,10 +285,16 @@ export class DrawComponent implements OnInit {
     return svgContainer;
   }
 
-  private breakPolyline() {
-    /* Прерывает рисование линии и возвращает её к состоянию до начала редактирования, 
-    если был клик по холсту или если курсор ушёл с холста */
+  private getpolylinePointIndex(coords: number[][], x: number, y: number) {
+    // Проверяет вхождение точки в заданный массив точек
+    const index = coords.findIndex((item) => (item[0] === x && item[1] === y));
 
+    return index;
+  }
+
+  private breakPolyline() {
+    // Прерывает рисование линии и возвращает её к состоянию до начала редактирования, 
+    // если был клик по холсту или если курсор ушёл с холста
     if (this.isNewLine) {
       this.polylines.pop();
     }
