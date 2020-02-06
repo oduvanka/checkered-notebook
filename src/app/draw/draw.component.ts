@@ -162,8 +162,13 @@ export class DrawComponent implements OnInit {
 
     const indexPoint = this.getpolylinePointIndex(currentCoords, cx, cy);
     // если точка с таким индексом есть и она не первая - не поставим её
-    const isInnerPoint = (indexPoint > 0) ? true : false;
+    const isInnerPoint = (indexPoint > 0 && indexPoint < currentCoords.length-1) ? true : false;
     if (isInnerPoint) return;
+
+    // удаляем временную точку, которая добавлялась при mouseMove
+    currentCoords.pop();
+    currentCoords.push([cx, cy]);
+    this.nFixedPolylinePoints++;
 
     this.turnOffLineDrawing();
   }
