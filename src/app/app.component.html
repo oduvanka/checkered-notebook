@@ -1,27 +1,22 @@
-<div>
-  <div>
-    <app-draw 
-      [(polylines)]="polylines"
-      [isEditLine]="isEditPolyLine" 
-      [editablePolyline]="selectedPolyline" 
-      [editablePolylineCopyBefore]="selectedPolylineCopyBefore"
-      (isEditLineToogle)="isEditPolyLine=$event"
-      (editablePolylineChange)="selectedPolyline=$event" 
-      (editablePolylineCopyBeforeChange)="selectedPolylineCopyBefore=$event" 
-    >
-    </app-draw>
-  </div>
-  <div>
-    <app-polyline-list 
-      *ngIf="polylines.length" 
-      [(polylines)]="polylines" 
-      [isEditLine]="isEditPolyLine" 
-      [selectedPolyline]="selectedPolyline" 
-      [selectedPolylineCopyBefore]="selectedPolylineCopyBefore"
-      (isEditLineToogle)="isEditPolyLine=$event"
-      (selectedPolylineChange)="selectedPolyline=$event" 
-      (selectedPolylineCopyBeforeChange)="selectedPolylineCopyBefore=$event" 
-    >
-    </app-polyline-list>
-  </div>
+<h1 [ngClass]="{title:true}">Тетрадка в клеточку: рисуем по точкам</h1>
+<div [ngClass]="{content:true}">
+  <app-draw 
+    [(polylines)]="polylines"
+    [isEditLine]="isEditPolyLine" 
+    [editablePolyline]="selectedPolyline" 
+    [editablePolylineCopyBefore]="selectedPolylineCopyBefore"
+    (isEditLineToogle)="isEditPolyLine=$event"
+    (editablePolylineChange)="selectedPolyline=$event" 
+    (editablePolylineCopyBeforeChange)="selectedPolylineCopyBefore=$event" >
+  </app-draw>
+  <app-polyline-list 
+    *ngIf="polylines.length" 
+    [(polylines)]="polylines" 
+    [isEditLine]="isEditPolyLine" 
+    [selectedPolyline]="selectedPolyline" 
+    [selectedPolylineCopyBefore]="selectedPolylineCopyBefore"
+    (isEditLineToogle)="isEditPolyLine=$event"
+    (selectedPolylineChange)="selectedPolyline=$event" 
+    (selectedPolylineCopyBeforeChange)="selectedPolylineCopyBefore=$event" >
+  </app-polyline-list>
 </div>

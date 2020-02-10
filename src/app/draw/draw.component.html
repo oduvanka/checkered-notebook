@@ -1,63 +1,64 @@
-<svg style="position:absolute; top:0; left:0;" width="100%" height="300px" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="gray" stroke-width="0.5"/>
-    </pattern>
-    <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
-      <rect width="100" height="100" fill="url(#smallGrid)"/>
-      <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-width="1"/>
-    </pattern>
-  </defs>
-  <rect width="100%" height="100%" fill="url(#grid)" />
-</svg>
+<div [ngStyle]="styleContent">
+  <svg style="position:absolute; top:0; left:0;" [attr.width]="widthGrid" [attr.height]="heightGrid" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="gray" stroke-width="0.5"/>
+      </pattern>
+      <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
+        <rect width="100" height="100" fill="url(#smallGrid)"/>
+        <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-width="1"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#grid)" />
+  </svg>
 
-<svg-container
-  containerId="svg-element"
-  [height]="height"
-  [showGrid]="isShowGrid"
-  [hoverable]="isHoverable"
-  [pointSize]="sizePoint"
-  (clickEvent)="onClick($event)"
-  (doubleClickEvent)="onDoubleClick($event)"
-  (mouseMoveEvent)="onMouseMove($event)"
-  (mouseOutEvent)="onMouseOut($event)"
->
+  <svg-container
+    containerId="svg-element"
+    [height]="height"
+    [showGrid]="isShowGrid"
+    [hoverable]="isHoverable"
+    [pointSize]="sizePoint"
+    (clickEvent)="onClick($event)"
+    (doubleClickEvent)="onDoubleClick($event)"
+    (mouseMoveEvent)="onMouseMove($event)"
+    (mouseOutEvent)="onMouseOut($event)" >
 
-  <svg-polygon
-    *ngFor="let item of polygons"
-    points={{item.coords}}
-    fill="none"
-    [borderSize]="borderSize"
-    borderColor={{item.color}} >
-  </svg-polygon>
+    <svg-polygon
+      *ngFor="let item of polygons"
+      points={{item.coords}}
+      fill="none"
+      [borderSize]="borderSize"
+      borderColor={{item.color}} >
+    </svg-polygon>
 
-  <svg-polyline
-    *ngFor="let item of polylines"
-    points={{item.coords}}
-    fill="none"
-    borderSize={{getPolylineBorderSize(item.id,item.color)}} 
-    borderColor={{getPolylineBorderColor(item.id,item.color)}} 
-    (clickEvent)="onClickPolyline($event)" 
-    (mouseOverEvent)="onMouseOverPolyline()"
-    (mouseOutEvent)="onMouseOutPolyline()" >
-  </svg-polyline>
+    <svg-polyline
+      *ngFor="let item of polylines"
+      points={{item.coords}}
+      fill="none"
+      borderSize={{getPolylineBorderSize(item.id,item.color)}} 
+      borderColor={{getPolylineBorderColor(item.id,item.color)}} 
+      (clickEvent)="onClickPolyline($event)" 
+      (mouseOverEvent)="onMouseOverPolyline()"
+      (mouseOutEvent)="onMouseOutPolyline()" >
+    </svg-polyline>
 
-  <svg-circle
-    *ngFor="let item of points"
-    [radius]="rCircle"
-    x={{item.circle.x}} y={{item.circle.y}}
-    color={{item.circle.color}}
-    (clickEvent)="onClickCircle($event)"
-    (doubleClickEvent)="onDoubleClickCircle($event)"
-    (mouseOverEvent)="onMouseOverCircle($event)"
-    (mouseOutEvent)="onMouseOutCircle()" >
-  </svg-circle>
+    <svg-circle
+      *ngFor="let item of points"
+      [radius]="rCircle"
+      x={{item.circle.x}} y={{item.circle.y}}
+      color={{item.circle.color}}
+      (clickEvent)="onClickCircle($event)"
+      (doubleClickEvent)="onDoubleClickCircle($event)"
+      (mouseOverEvent)="onMouseOverCircle($event)"
+      (mouseOutEvent)="onMouseOutCircle()" >
+    </svg-circle>
 
-  <svg-text 
-    *ngFor="let item of points"
-    text={{item.label.text}}
-    x={{item.label.x}} y={{item.label.y}}
-    [size]="sizeText" [color]="colorText" >
-  </svg-text>
+    <svg-text 
+      *ngFor="let item of points"
+      text={{item.label.text}}
+      x={{item.label.x}} y={{item.label.y}}
+      [size]="sizeText" [color]="colorText" >
+    </svg-text>
 
-</svg-container>
+  </svg-container>
+</div>

@@ -8,8 +8,10 @@ import { Polyline } from '../polyline';
   styleUrls: ['./draw.component.css']
 })
 export class DrawComponent implements OnInit {
-  // холст
+  public width: number;
   public height: number;
+
+  // холст
   public isShowGrid: boolean;
   public isHoverable: boolean;
   public sizePoint: number;
@@ -39,10 +41,21 @@ export class DrawComponent implements OnInit {
   private transparencyColorPolyline: number;
   private nFixedPolylinePoints: number; // кол-во зафиксированных точек в редактируемой полилинии
 
+  // внешний контейнер
+  public styleContent;
+  public widthContent: string;
+  public heightContent: string;
+
+  // своя сетка
+  public widthGrid: string;
+  public heightGrid: string;
+
   constructor( public _dataService: DataService ) { }
 
   ngOnInit() {
-    this.height = 300;
+    this.width = 650;
+    this.height = 350;
+
     this.isShowGrid = false;
     // isHoverable
     // false - нет события клика по холсту, 
@@ -64,6 +77,17 @@ export class DrawComponent implements OnInit {
     this.defaultColorPolyline = "#000000";
     this.transparencyColorPolyline = 0.5;
     this.turnOffLineDrawing();
+
+    this.widthContent = this.width + "px";
+    this.heightContent = this.height + "px";
+    this.styleContent = {
+      'position': 'relative',
+      'width': this.widthContent,
+      'height': this.heightContent,
+      'margin-right': '20px'
+    }
+    this.widthGrid = this.width + "px";
+    this.heightGrid = this.height + "px";
   }
 
   ngOnChanges() { }
