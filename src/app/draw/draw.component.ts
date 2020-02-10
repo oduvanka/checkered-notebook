@@ -43,7 +43,7 @@ export class DrawComponent implements OnInit {
 
   ngOnInit() {
     this.height = 300;
-    this.isShowGrid = true;
+    this.isShowGrid = false;
     // isHoverable
     // false - нет события клика по холсту, 
     // true - нет события клика любого эл-та, т.к. sizePoint (даже = 0) как бы перекрывает эл-т

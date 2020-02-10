@@ -1,31 +1,27 @@
 <div>
-  <p>Тест библиотеки рисования 
-    <a href="https://www.npmjs.com/package/ngx-svg" target="_blank" rel="noopener noreferrer" >
-      ngx-svg
-    </a>
-  </p>
-
-  <app-draw 
-    [(polylines)]="polylines"
-    [isEditLine]="isEditPolyLine" 
-    [editablePolyline]="selectedPolyline" 
-    [editablePolylineCopyBefore]="selectedPolylineCopyBefore"
-    (isEditLineToogle)="isEditPolyLine=$event"
-    (editablePolylineChange)="selectedPolyline=$event" 
-    (editablePolylineCopyBeforeChange)="selectedPolylineCopyBefore=$event" 
-  >
-  </app-draw>
-
-  <app-polyline-list 
-    *ngIf="polylines.length" 
-    [(polylines)]="polylines" 
-    [isEditLine]="isEditPolyLine" 
-    [selectedPolyline]="selectedPolyline" 
-    [selectedPolylineCopyBefore]="selectedPolylineCopyBefore"
-    (isEditLineToogle)="isEditPolyLine=$event"
-    (selectedPolylineChange)="selectedPolyline=$event" 
-    (selectedPolylineCopyBeforeChange)="selectedPolylineCopyBefore=$event" 
-  >
-  </app-polyline-list>
-
+  <div>
+    <app-draw 
+      [(polylines)]="polylines"
+      [isEditLine]="isEditPolyLine" 
+      [editablePolyline]="selectedPolyline" 
+      [editablePolylineCopyBefore]="selectedPolylineCopyBefore"
+      (isEditLineToogle)="isEditPolyLine=$event"
+      (editablePolylineChange)="selectedPolyline=$event" 
+      (editablePolylineCopyBeforeChange)="selectedPolylineCopyBefore=$event" 
+    >
+    </app-draw>
+  </div>
+  <div>
+    <app-polyline-list 
+      *ngIf="polylines.length" 
+      [(polylines)]="polylines" 
+      [isEditLine]="isEditPolyLine" 
+      [selectedPolyline]="selectedPolyline" 
+      [selectedPolylineCopyBefore]="selectedPolylineCopyBefore"
+      (isEditLineToogle)="isEditPolyLine=$event"
+      (selectedPolylineChange)="selectedPolyline=$event" 
+      (selectedPolylineCopyBeforeChange)="selectedPolylineCopyBefore=$event" 
+    >
+    </app-polyline-list>
+  </div>
 </div>
