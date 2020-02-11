@@ -4,5 +4,8 @@
 
 .content {
   display: flex;
-  flex-wrap: wrap;
+}
+
+.polyline-list {
+  flex-grow: 1;
 }

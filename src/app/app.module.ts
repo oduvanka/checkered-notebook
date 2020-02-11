@@ -1,9 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 import { NgxSvgModule } from 'ngx-svg';
+
+import { AppComponent } from './app.component';
 import { DrawComponent } from './draw/draw.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { PolylineListComponent } from './polyline-list/polyline-list.component';
@@ -21,6 +26,11 @@ import { ClickStopPropagationDirective } from './click-stop-propagation.directiv
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    MatListModule,
+    MatIconModule,
+    MatInputModule,
+    MatButtonModule,
     NgxSvgModule
   ],
   providers: [],

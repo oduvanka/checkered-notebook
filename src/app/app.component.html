@@ -1,5 +1,6 @@
-<h1 [ngClass]="{title:true}">Тетрадка в клеточку: рисуем по точкам</h1>
-<div [ngClass]="{content:true}">
+<h1 class="title">Тетрадка в клеточку: рисуем по точкам</h1>
+
+<div class="content">
   <app-draw 
     [(polylines)]="polylines"
     [isEditLine]="isEditPolyLine" 
@@ -10,7 +11,7 @@
     (editablePolylineCopyBeforeChange)="selectedPolylineCopyBefore=$event" >
   </app-draw>
   <app-polyline-list 
-    *ngIf="polylines.length" 
+    class="polyline-list"
     [(polylines)]="polylines" 
     [isEditLine]="isEditPolyLine" 
     [selectedPolyline]="selectedPolyline" 

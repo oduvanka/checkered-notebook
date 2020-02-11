@@ -1,49 +1,6 @@
-.polylines {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.polyline {
-  display: flex;
-  min-height: 32px;
-  margin-bottom: 1px;
-
-  line-height: 32px;
-
-  background-color: #EEEEEE;
-}
-
-.info-polyline {
-  display: flex;
-  flex-grow: 2;
-}
-
-.check-polyline {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 20px;
-  margin-right: 10px;
-
-  background-color: #CCCCCC;
-}
-
-.check-polyline .marker {
-  width: 10px;
-  height: 10px;
-
-  background-color: #666666;
-  border-radius: 25%;
- }
-
-.props-polyline {
-  display: flex;
-}
-
 .index-polyline {
-  min-width: 20px;
-
+  margin-right: 20px;
+  
   color: #999999;
 }
 
@@ -52,14 +9,9 @@
 }
 
 .coords-polyline {
-  display: flex;
+ flex-grow: 1;
 }
 
-.coords-polyline p {
-  margin: 0;
-  padding: 0;
-}
-
-.btns-coords-polyline {
-  margin-left: 10px;
+.action-polyline {
+  flex-shrink: 0;
 }

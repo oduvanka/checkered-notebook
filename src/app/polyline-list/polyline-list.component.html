@@ -1,36 +1,47 @@
-<section>
-  <h2>Список линий</h2>
-  <ul class="polylines">
-    <li *ngFor="let polyline of polylines" class="polyline" >
-      <div class="info-polyline" (click)="onSelectPolyline(polyline)">
-        <div class="check-polyline">
-          <div *ngIf="polyline.id === selectedPolyline.id" class="marker"></div>
-        </div>
-        <div class="props-polyline">
-          <div class="index-polyline">{{polyline.id}}</div>
-          <div class="color-polyline">
-            <app-color-picker 
-              stop-propagation-evt
-              [currentColor]="polyline.color"
-              [isDisabled]="isDisabledColorPicker"
-              (currentColorChange)="polyline.color=$event" >
-            </app-color-picker>
-          </div>
-          <div class="coords-polyline">
-            <p>Точки: <span>{{polyline.coords | coords}}</span></p>
-            <div *ngIf="polyline.coords.length > 2" class="btns-coords-polyline">
-              <button stop-propagation-evt title="Удалить первую точку" (click)="deleteFirstCoord(polyline)">
-                x первую точку
-              </button>
-              <button stop-propagation-evt title="Удалить первую точку" (click)="deleteLastCoord(polyline)">
-                x последнюю точку
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button class="btn-polyline" title="Удалить линию" (click)="deletePolyline(polyline)">x линию</button>
-    </li>
-  </ul>
-</section>
+<h2>Список линий</h2>
+
+<p *ngIf="polylines.length === 0">
+  Кликните по любой точке, чтобы нарисовать первую линию
+</p>
+
+<mat-nav-list *ngIf="polylines.length">
+  <mat-list-item *ngFor="let polyline of polylines" (click)="onSelectPolyline(polyline)">
+    <mat-icon mat-list-icon color="primary">
+      <span *ngIf="polyline.id === selectedPolyline.id">check</span>
+    </mat-icon>
+    <p class="index-polyline">{{polyline.id}}</p>
+    <app-color-picker 
+      stop-propagation-evt
+      class="color-polyline"
+      [currentColor]="polyline.color"
+      [isDisabled]="isDisabledColorPicker"
+      (currentColorChange)="polyline.color=$event" >
+    </app-color-picker>
+    <p class="coords-polyline">
+      <span>Точки: </span>
+      <button 
+        *ngIf="polyline.coords.length > 2" 
+        mat-icon-button 
+        stop-propagation-evt 
+        title="Удалить первую точку" 
+        (click)="deleteFirstCoord(polyline)"
+      >
+        <mat-icon>clear</mat-icon>
+      </button>
+      <span>{{polyline.coords | coords}}</span>
+      <button 
+        *ngIf="polyline.coords.length > 2" 
+        mat-icon-button 
+        stop-propagation-evt 
+        title="Удалить последнюю точку" 
+        (click)="deleteLastCoord(polyline)"
+      >
+        <mat-icon>clear</mat-icon>
+      </button>
+    </p>
+    <button mat-button class="action-polyline" title="Удалить линию" color="warn" (click)="deletePolyline(polyline)">
+      <mat-icon>delete</mat-icon>удалить
+    </button>
+  </mat-list-item>
+</mat-nav-list>
 
