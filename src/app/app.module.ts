@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 import { NgxSvgModule } from 'ngx-svg';
+import { NgxRulerModule } from 'ngx-ruler';
 
 import { AppComponent } from './app.component';
 import { DrawComponent } from './draw/draw.component';
@@ -14,6 +15,7 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { PolylineListComponent } from './polyline-list/polyline-list.component';
 import { CoordsPipe } from './coords.pipe';
 import { ClickStopPropagationDirective } from './click-stop-propagation.directive';
+import { RulersComponent } from './rulers/rulers.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { ClickStopPropagationDirective } from './click-stop-propagation.directiv
     ColorPickerComponent,
     PolylineListComponent,
     CoordsPipe,
-    ClickStopPropagationDirective
+    ClickStopPropagationDirective,
+    RulersComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,8 @@ import { ClickStopPropagationDirective } from './click-stop-propagation.directiv
     MatIconModule,
     MatInputModule,
     MatButtonModule,
-    NgxSvgModule
+    NgxSvgModule,
+    NgxRulerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

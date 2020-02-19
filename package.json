@@ -23,13 +23,14 @@
     "@angular/router": "~8.2.14",
     "angular-cli-ghpages": "^0.6.2",
     "hammerjs": "^2.0.8",
+    "ngx-ruler": "^0.2.3",
     "ngx-svg": "^0.5.2",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.803.22",
+    "@angular-devkit/build-angular": "^0.803.24",
     "@angular/cli": "^8.3.22",
     "@angular/compiler-cli": "~8.2.14",
     "@angular/language-service": "~8.2.14",
