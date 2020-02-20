@@ -16,6 +16,7 @@ import { PolylineListComponent } from './polyline-list/polyline-list.component';
 import { CoordsPipe } from './coords.pipe';
 import { ClickStopPropagationDirective } from './click-stop-propagation.directive';
 import { RulersComponent } from './rulers/rulers.component';
+import { GridComponent } from './grid/grid.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { RulersComponent } from './rulers/rulers.component';
     PolylineListComponent,
     CoordsPipe,
     ClickStopPropagationDirective,
-    RulersComponent
+    RulersComponent,
+    GridComponent
   ],
   imports: [
     BrowserModule,

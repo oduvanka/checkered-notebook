@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { NgxRulerComponent, NgxRulerService } from 'ngx-ruler';
 
 @Component({
@@ -10,15 +10,29 @@ export class RulersComponent implements OnInit {
 
   @ViewChild('rulerH', { static: false }) ruler1: NgxRulerComponent;
   @ViewChild('rulerV', { static: false }) ruler2: NgxRulerComponent;
-  public unit = 20;
-  /*private rulerWidth = "30px";
-  private rulerLength = "calc(100% - " + this.rulerWidth + ")";
-  public rulerStyleH = { height: this.rulerWidth, width: this.rulerLength, marginLeft: this.rulerWidth };
-  public rulerStyleV = { height: this.rulerLength, width: this.rulerWidth };*/
+  public unit: number;
+
+  @Input() allWidht: number;
+  @Input() allHeight: number;
+  private rulerWidth: number;
+  private srtAllWidht: string;
+  private strAllHeight: string;
+
+  public containerStyle: Object;
 
   constructor() { }
 
   ngOnInit() {
+    this.unit = 100;
+    this.rulerWidth = 30;
+    this.srtAllWidht = this.allWidht + "px";
+    this.strAllHeight = this.allHeight + "px";
+
+    this.containerStyle = {
+      'width': this.srtAllWidht,
+      'height': this.strAllHeight,
+      'background-color': "#333333"
+    }
   }
 
   ngAfterViewInit() {

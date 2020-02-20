@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angu
 import { DataService } from '../data.service';
 import { Polyline } from '../polyline';
 
+/* TODO: нужно понимать, какие именно линейки и в каком количестве у меня есть */
+
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
@@ -42,13 +44,12 @@ export class DrawComponent implements OnInit {
   private nFixedPolylinePoints: number; // кол-во зафиксированных точек в редактируемой полилинии
 
   // внешний контейнер
-  public styleContent;
+  public styleContent: Object;
   public widthContent: string;
   public heightContent: string;
 
-  // своя сетка
-  public widthGrid: string;
-  public heightGrid: string;
+  // за холстом
+  public styleBack: Object;
 
   constructor( public _dataService: DataService ) { }
 
@@ -81,13 +82,16 @@ export class DrawComponent implements OnInit {
     this.widthContent = this.width + "px";
     this.heightContent = this.height + "px";
     this.styleContent = {
-      'position': 'relative',
+      'position': "relative",
       'width': this.widthContent,
       'height': this.heightContent,
-      'margin-right': '20px'
+      'margin-right': "20px",
     }
-    this.widthGrid = this.width + "px";
-    this.heightGrid = this.height + "px";
+    this.styleBack = {
+      'position': "absolute",
+      'top': 0,
+      'left': 0,
+    }
   }
 
   ngOnChanges() { }

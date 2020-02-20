@@ -1,17 +1,8 @@
-<app-rulers></app-rulers>
 <div [ngStyle]="styleContent">
-  <svg style="position:absolute; top:0; left:0;" [attr.width]="widthGrid" [attr.height]="heightGrid" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="gray" stroke-width="0.5"/>
-      </pattern>
-      <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
-        <rect width="100" height="100" fill="url(#smallGrid)"/>
-        <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-width="1"/>
-      </pattern>
-    </defs>
-    <rect width="100%" height="100%" fill="url(#grid)" />
-  </svg>
+
+  <app-rulers [ngStyle]="styleBack" [allWidht]="width" [allHeight]="height"></app-rulers>
+
+  <app-grid [ngStyle]="styleBack" [widthGrid]="width" [heightGrid]="height"></app-grid>
 
   <svg-container
     containerId="svg-element"
@@ -62,4 +53,5 @@
     </svg-text>
 
   </svg-container>
+
 </div>
