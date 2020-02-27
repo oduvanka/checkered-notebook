@@ -1,16 +1,42 @@
 <div [ngStyle]="containerStyle">
-  <div style="height: 30px; margin-left: 30px;">
+  <div [ngStyle]="htStyle">
     <ngx-ruler
-      #rulerH
+      #rulerHT
       type="horizontal"
-      [unit]="unit" >
+      [unit]="unit" 
+      [backgroundColor]="bgColor" 
+      [lineColor]="markColor" 
+      [textColor]="labelColor" >
     </ngx-ruler>
   </div>
-  <div style="height: calc(100% - 30px); width: 30px;">
+  <div [ngStyle]="vlStyle">
     <ngx-ruler
-      #rulerV
+      #rulerVL
       type="vertical"
-      [unit]="unit" >
+      [unit]="unit"
+      [backgroundColor]="bgColor" 
+      [lineColor]="markColor" 
+      [textColor]="labelColor" >
+    </ngx-ruler>
+  </div>
+  <div [ngStyle]="vrStyle">
+    <ngx-ruler
+      #rulerVR
+      type="vertical"
+      [unit]="unit"
+      [backgroundColor]="bgColor" 
+      [lineColor]="markColor" 
+      [textColor]="labelColor" >
+    </ngx-ruler>
+  </div>
+  <div [ngStyle]="hbStyle">
+    <ngx-ruler
+      #rulerHB
+      type="horizontal"
+      [unit]="unit" 
+      [backgroundColor]="bgColor" 
+      [lineColor]="markColor" 
+      [textColor]="labelColor" >
     </ngx-ruler>
   </div>
 </div>

@@ -7,8 +7,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class GridComponent implements OnInit {
 
-  @Input() widthGrid: number;
-  @Input() heightGrid: number;
+  @Input() width: number;
+  @Input() height: number;
 
   public pxWidth: string;
   public pxHeight: string;
@@ -16,8 +16,8 @@ export class GridComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.pxWidth = this.widthGrid + "px";
-    this.pxHeight = this.heightGrid + "px";
+    this.pxWidth = this.width + "px";
+    this.pxHeight = this.height + "px";
   }
 
 }

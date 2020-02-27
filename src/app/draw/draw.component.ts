@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DataService } from '../data.service';
 import { Polyline } from '../polyline';
 
@@ -10,10 +10,32 @@ import { Polyline } from '../polyline';
   styleUrls: ['./draw.component.css']
 })
 export class DrawComponent implements OnInit {
-  public width: number;
-  public height: number;
+  private widthContent: number;
+  private heightContent: number;
+
+  // внешний контейнер
+  public pxWidthContent: string;
+  public pxHeightContent: string;
+  public styleContent: Object;
+
+  // линейки
+  private rulers = {
+    ht: 30, // горизонтальная сверху
+    hb: 30, // горизонтальная снизу
+    vl: 30, // вертикальная слева
+    vr: 30, // вертикальная справа
+  }
+  public widthRuler: number;
+  public heightRuler: number;
+  public styleRuler: Object;
+
+  // сетка
+  public widthGrid: number;
+  public heightGrid: number;
+  public styleGrid: Object;
 
   // холст
+  public heightCanvas: number;
   public isShowGrid: boolean;
   public isHoverable: boolean;
   public sizePoint: number;
@@ -43,20 +65,42 @@ export class DrawComponent implements OnInit {
   private transparencyColorPolyline: number;
   private nFixedPolylinePoints: number; // кол-во зафиксированных точек в редактируемой полилинии
 
-  // внешний контейнер
-  public styleContent: Object;
-  public widthContent: string;
-  public heightContent: string;
-
-  // за холстом
-  public styleBack: Object;
-
   constructor( public _dataService: DataService ) { }
 
   ngOnInit() {
-    this.width = 650;
-    this.height = 350;
+    this.widthContent = 650;
+    this.heightContent = 350;
 
+    this.pxWidthContent = this.widthContent - this.rulers.vl - this.rulers.vr + "px";
+    this.pxHeightContent = this.heightContent - this.rulers.ht - this.rulers.hb + "px";
+    const pxPaddings = this.rulers.ht + "px " + this.rulers.vr + "px " + this.rulers.hb + "px " + this.rulers.vl + "px";
+    this.styleContent = {
+      'position': "relative",
+      'width': this.pxWidthContent,
+      'height': this.pxHeightContent,
+      'margin-right': "20px",
+      'padding': pxPaddings,
+    }
+
+    this.widthRuler = this.widthContent;
+    this.heightRuler = this.heightContent;
+    this.styleRuler = {
+      'position': "absolute",
+      'top': 0,
+      'left': 0,
+    }
+
+    this.widthGrid = this.widthContent - this.rulers.vl - this.rulers.vr;
+    this.heightGrid = this.heightContent - this.rulers.ht - this.rulers.hb;
+    const pxTopGrid = this.rulers.ht + "px";
+    const pxLeftGrid = this.rulers.vl + "px";
+    this.styleGrid = {
+      'position': "absolute",
+      'top': pxTopGrid,
+      'left': pxLeftGrid,
+    }
+
+    this.heightCanvas = this.heightContent - this.rulers.ht - this.rulers.hb;
     this.isShowGrid = false;
     // isHoverable
     // false - нет события клика по холсту, 
@@ -78,20 +122,6 @@ export class DrawComponent implements OnInit {
     this.defaultColorPolyline = "#000000";
     this.transparencyColorPolyline = 0.5;
     this.turnOffLineDrawing();
-
-    this.widthContent = this.width + "px";
-    this.heightContent = this.height + "px";
-    this.styleContent = {
-      'position': "relative",
-      'width': this.widthContent,
-      'height': this.heightContent,
-      'margin-right': "20px",
-    }
-    this.styleBack = {
-      'position': "absolute",
-      'top': 0,
-      'left': 0,
-    }
   }
 
   ngOnChanges() { }

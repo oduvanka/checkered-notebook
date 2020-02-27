@@ -1,12 +1,12 @@
 <div [ngStyle]="styleContent">
 
-  <app-rulers [ngStyle]="styleBack" [allWidht]="width" [allHeight]="height"></app-rulers>
+  <app-rulers [ngStyle]="styleRuler" [widht]="widthRuler" [height]="heightRuler" [equipment]="rulers"></app-rulers>
 
-  <app-grid [ngStyle]="styleBack" [widthGrid]="width" [heightGrid]="height"></app-grid>
+  <app-grid [ngStyle]="styleGrid" [width]="widthGrid" [height]="heightGrid"></app-grid>
 
   <svg-container
     containerId="svg-element"
-    [height]="height"
+    [height]="heightCanvas"
     [showGrid]="isShowGrid"
     [hoverable]="isHoverable"
     [pointSize]="sizePoint"
