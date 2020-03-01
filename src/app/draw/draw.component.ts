@@ -21,9 +21,9 @@ export class DrawComponent implements OnInit {
   // линейки
   private rulers = {
     ht: 30, // горизонтальная сверху
-    hb: 30, // горизонтальная снизу
+    hb: 0, // горизонтальная снизу
     vl: 30, // вертикальная слева
-    vr: 30, // вертикальная справа
+    vr: 0, // вертикальная справа
   }
   public widthRuler: number;
   public heightRuler: number;

@@ -79,7 +79,7 @@ export class RulersComponent implements OnInit {
       'left': (this.equipment['vl']) ? pxWidthVL : 0,
     };
 
-    this.unit = 50;
+    this.unit = 40;
     this.bgColor = "#FFFFFF";
     this.markColor = "#333333";
     this.labelColor = "#333333";
