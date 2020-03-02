@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DataService } from '../data.service';
 import { Polyline } from '../polyline';
+import { Frame } from '../frame';
 
 /* TODO: нужно понимать, какие именно линейки и в каком количестве у меня есть */
 
@@ -19,15 +20,10 @@ export class DrawComponent implements OnInit {
   public styleContent: Object;
 
   // линейки
-  public rulers = {
-    ht: 30, // горизонтальная сверху
-    hb: 0, // горизонтальная снизу
-    vl: 30, // вертикальная слева
-    vr: 0, // вертикальная справа
-  }
-  public widthRuler: number;
-  public heightRuler: number;
-  public styleRuler: Object;
+  public rulers: Frame;
+  public widthFrame: number;
+  public heightFrame: number;
+  public styleFrame: Object;
 
   // сетка
   public widthGrid: number;
@@ -70,6 +66,7 @@ export class DrawComponent implements OnInit {
   ngOnInit() {
     this.widthContent = 650;
     this.heightContent = 350;
+    this.rulers = new Frame(30, 0, 30, 0);
 
     this.pxWidthContent = this.widthContent - this.rulers.vl - this.rulers.vr + "px";
     this.pxHeightContent = this.heightContent - this.rulers.ht - this.rulers.hb + "px";
@@ -82,9 +79,9 @@ export class DrawComponent implements OnInit {
       'padding': pxPaddings,
     }
 
-    this.widthRuler = this.widthContent;
-    this.heightRuler = this.heightContent;
-    this.styleRuler = {
+    this.widthFrame = this.widthContent;
+    this.heightFrame = this.heightContent;
+    this.styleFrame = {
       'position': "absolute",
       'top': 0,
       'left': 0,

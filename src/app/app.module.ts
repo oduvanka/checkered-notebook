@@ -15,7 +15,7 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { PolylineListComponent } from './polyline-list/polyline-list.component';
 import { CoordsPipe } from './coords.pipe';
 import { ClickStopPropagationDirective } from './click-stop-propagation.directive';
-import { RulersComponent } from './rulers/rulers.component';
+import { FrameComponent } from './frame/frame.component';
 import { GridComponent } from './grid/grid.component';
 
 @NgModule({
@@ -26,7 +26,7 @@ import { GridComponent } from './grid/grid.component';
     PolylineListComponent,
     CoordsPipe,
     ClickStopPropagationDirective,
-    RulersComponent,
+    FrameComponent,
     GridComponent
   ],
   imports: [

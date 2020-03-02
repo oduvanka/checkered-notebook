@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { NgxRulerComponent, NgxRulerService } from 'ngx-ruler';
+import { Frame } from '../frame';
 
 @Component({
   selector: 'app-rulers',
-  templateUrl: './rulers.component.html',
-  styleUrls: ['./rulers.component.css']
+  templateUrl: './frame.component.html',
+  styleUrls: ['./frame.component.css']
 })
-export class RulersComponent implements OnInit {
+export class FrameComponent implements OnInit {
 
   @ViewChild('rulerHT', { static: false }) rulerH1: NgxRulerComponent;
   @ViewChild('rulerVR', { static: false }) rulerV1: NgxRulerComponent;
@@ -15,7 +16,7 @@ export class RulersComponent implements OnInit {
 
   @Input() widht: number;
   @Input() height: number;
-  @Input() equipment: Object;
+  @Input() equipment: Frame;
 
   public containerStyle: Object;
 
@@ -42,33 +43,33 @@ export class RulersComponent implements OnInit {
       'position': 'relative',
     }
 
-    const lenghtRulerH = this.widht - this.equipment['vl'] - this.equipment['vr'] + "px";
-    const lenghtRulerV = this.height - this.equipment['ht'] - this.equipment['hb'] + "px";
+    const lenghtRulerH = this.widht - this.equipment.vl - this.equipment.vr + "px";
+    const lenghtRulerV = this.height - this.equipment.ht - this.equipment.hb + "px";
 
-    const pxWidthHT = this.equipment['ht'] + "px";
-    const pxWidthVL = this.equipment['vl'] + "px";
-    const pxWidthHB = this.equipment['hb'] + "px";
-    const pxWidthVR = this.equipment['vr'] + "px";
+    const pxWidthHT = this.equipment.ht + "px";
+    const pxWidthVL = this.equipment.vl + "px";
+    const pxWidthHB = this.equipment.hb + "px";
+    const pxWidthVR = this.equipment.vr + "px";
 
     this.htStyle = {
       'width': lenghtRulerH,
       'height': pxWidthHT,
       'position': 'absolute',
       'top': 0,
-      'left': (this.equipment['vl']) ? pxWidthVL : 0,
+      'left': (this.equipment.vl) ? pxWidthVL : 0,
     };
     this.vlStyle = {
       'width': pxWidthVL,
       'height': lenghtRulerV,
       'position': 'absolute',
-      'top': (this.equipment['ht']) ? pxWidthHT : 0,
+      'top': (this.equipment.ht) ? pxWidthHT : 0,
       'left': 0,
     };
     this.vrStyle = {
       'width': pxWidthVR,
       'height': lenghtRulerV,
       'position': 'absolute',
-      'top': (this.equipment['ht']) ? pxWidthHT : 0,
+      'top': (this.equipment.ht) ? pxWidthHT : 0,
       'right': 0
     };
     this.hbStyle = {
@@ -76,7 +77,7 @@ export class RulersComponent implements OnInit {
       'height': pxWidthHB,
       'position': 'absolute',
       'bottom': 0,
-      'left': (this.equipment['vl']) ? pxWidthVL : 0,
+      'left': (this.equipment.vl) ? pxWidthVL : 0,
     };
 
     this.unit = 40;
