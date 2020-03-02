@@ -174,11 +174,7 @@ export class DrawComponent implements OnInit {
       // создаём новую polyline
       this.isNewLine = true;
       const newId = this.polylines.length.toString();
-      const newLine = {
-        id: newId, 
-        coords: [[cx, cy]], 
-        color: this.defaultColorPolyline
-      };
+      const newLine = new Polyline(newId, [[cx, cy]], this.defaultColorPolyline);
       this.polylines.push(newLine);
       const existingLine = this.polylines.find((item) => item.id === newId);
       this.turnOnLineDrawing(existingLine);
@@ -368,8 +364,8 @@ export class DrawComponent implements OnInit {
   private turnOffLineDrawing() {
     this.isNewLine = false;
     this.isEditLine = false;
-    this.editablePolyline = {id: "-", coords: [], color: ""};
-    this.editablePolylineCopyBefore = {id: "-", coords: [], color: ""};
+    this.editablePolyline = Polyline.clear();
+    this.editablePolylineCopyBefore = Polyline.clear();
     this.nFixedPolylinePoints = 0;
 
     this.editablePolylineChange.emit(this.editablePolyline);

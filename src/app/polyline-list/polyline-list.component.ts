@@ -27,11 +27,7 @@ export class PolylineListComponent implements OnInit {
   onSelectPolyline(polyline: Polyline): void {
     //console.log("onSelectPolyline");
     this.selectedPolyline = polyline;
-    this.selectedPolylineCopyBefore = {
-      id: polyline.id,
-      coords: [...polyline.coords],
-      color: polyline.color
-    };
+    this.selectedPolylineCopyBefore = new Polyline(polyline.id, [...polyline.coords], polyline.color);
     this.isEditLine = true;
     
     this.selectedPolylineChange.emit(this.selectedPolyline);
@@ -44,8 +40,8 @@ export class PolylineListComponent implements OnInit {
     const currentIndex = this.polylines.findIndex((item) => item.id === polyline.id);
     if (currentIndex !== -1) this.polylines.splice(currentIndex, 1);
 
-    this.selectedPolyline = {id: "-", coords: [], color: ""};
-    this.selectedPolylineCopyBefore = {id: "-", coords: [], color: ""};
+    this.selectedPolyline = Polyline.clear();
+    this.selectedPolylineCopyBefore = Polyline.clear();
     this.isEditLine = false;
     
     this.selectedPolylineChange.emit(this.selectedPolyline);
