@@ -16,7 +16,7 @@ export class FrameComponent implements OnInit {
 
   @Input() widht: number;
   @Input() height: number;
-  @Input() equipment: Frame;
+  @Input() borders: Frame;
 
   public containerStyle: Object;
 
@@ -43,41 +43,42 @@ export class FrameComponent implements OnInit {
       'position': 'relative',
     }
 
-    const lenghtRulerH = this.widht - this.equipment.vl - this.equipment.vr + "px";
-    const lenghtRulerV = this.height - this.equipment.ht - this.equipment.hb + "px";
+    const lenghtRulerH = this.widht - this.borders.vl - this.borders.vr + "px";
+    const lenghtRulerV = this.height - this.borders.ht - this.borders.hb + "px";
 
-    const pxWidthHT = this.equipment.ht + "px";
-    const pxWidthVL = this.equipment.vl + "px";
-    const pxWidthHB = this.equipment.hb + "px";
-    const pxWidthVR = this.equipment.vr + "px";
+    const pxWidthHT = this.borders.ht + "px";
+    const pxWidthVL = this.borders.vl + "px";
+    const pxWidthHB = this.borders.hb + "px";
+    const pxWidthVR = this.borders.vr + "px";
 
+    const positionAbsolute = "absolute";
     this.htStyle = {
       'width': lenghtRulerH,
       'height': pxWidthHT,
-      'position': 'absolute',
+      'position': positionAbsolute,
       'top': 0,
-      'left': (this.equipment.vl) ? pxWidthVL : 0,
+      'left': (this.borders.vl) ? pxWidthVL : 0,
     };
     this.vlStyle = {
       'width': pxWidthVL,
       'height': lenghtRulerV,
-      'position': 'absolute',
-      'top': (this.equipment.ht) ? pxWidthHT : 0,
+      'position': positionAbsolute,
+      'top': (this.borders.ht) ? pxWidthHT : 0,
       'left': 0,
     };
     this.vrStyle = {
       'width': pxWidthVR,
       'height': lenghtRulerV,
-      'position': 'absolute',
-      'top': (this.equipment.ht) ? pxWidthHT : 0,
+      'position': positionAbsolute,
+      'top': (this.borders.ht) ? pxWidthHT : 0,
       'right': 0
     };
     this.hbStyle = {
       'width': lenghtRulerH,
       'height': pxWidthHB,
-      'position': 'absolute',
+      'position': positionAbsolute,
       'bottom': 0,
-      'left': (this.equipment.vl) ? pxWidthVL : 0,
+      'left': (this.borders.vl) ? pxWidthVL : 0,
     };
 
     this.unit = 40;
@@ -92,10 +93,10 @@ export class FrameComponent implements OnInit {
   }
 
   onResize = () => {
-    this.rulerH1.resize();
-    this.rulerH2.resize();
-    this.rulerV1.resize();
-    this.rulerV2.resize();
+    if (this.borders.ht) this.rulerH1.resize();
+    if (this.borders.hb) this.rulerH2.resize();
+    if (this.borders.vr) this.rulerV1.resize();
+    if (this.borders.vl) this.rulerV2.resize();
   }
 
 }

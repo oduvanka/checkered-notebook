@@ -1,5 +1,5 @@
 <div [ngStyle]="containerStyle">
-  <div [ngStyle]="htStyle">
+  <div *ngIf="borders.ht" [ngStyle]="htStyle">
     <ngx-ruler
       #rulerHT
       type="horizontal"
@@ -9,7 +9,7 @@
       [textColor]="labelColor" >
     </ngx-ruler>
   </div>
-  <div [ngStyle]="vlStyle">
+  <div *ngIf="borders.vl" [ngStyle]="vlStyle">
     <ngx-ruler
       #rulerVL
       type="vertical"
@@ -19,7 +19,7 @@
       [textColor]="labelColor" >
     </ngx-ruler>
   </div>
-  <div [ngStyle]="vrStyle">
+  <div *ngIf="borders.vr" [ngStyle]="vrStyle">
     <ngx-ruler
       #rulerVR
       type="vertical"
@@ -29,7 +29,7 @@
       [textColor]="labelColor" >
     </ngx-ruler>
   </div>
-  <div [ngStyle]="hbStyle">
+  <div *ngIf="borders.hb" [ngStyle]="hbStyle">
     <ngx-ruler
       #rulerHB
       type="horizontal"
