@@ -23,7 +23,7 @@
     "@angular/router": "~8.2.14",
     "angular-cli-ghpages": "^0.6.2",
     "hammerjs": "^2.0.8",
-    "ngx-ruler": "^0.2.3",
+    "ngx-ruler": "^0.3.0",
     "ngx-svg": "^0.5.2",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",

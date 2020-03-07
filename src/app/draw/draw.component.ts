@@ -66,7 +66,7 @@ export class DrawComponent implements OnInit {
   ngOnInit() {
     this.widthContent = 650;
     this.heightContent = 350;
-    this.rulers = new Frame(30, 0, 30, 0);
+    this.rulers = new Frame(30, 30, 30, 30);
 
     this.pxWidthContent = this.widthContent - this.rulers.vl - this.rulers.vr + "px";
     this.pxHeightContent = this.heightContent - this.rulers.ht - this.rulers.hb + "px";
