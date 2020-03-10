@@ -13,8 +13,8 @@ export class AppComponent {
   isEditPolyLine: boolean = false;
 
   // ссылка на редактируемый элемент массива polylines
-  selectedPolyline: Polyline = {id: "-", coords: [], color: ""};
+  selectedPolyline: Polyline = Polyline.clear();
 
   // копия редактируемого элемента массива, для отмены изменений
-  selectedPolylineCopyBefore: Polyline = {id: "-", coords: [], color: ""};
+  selectedPolylineCopyBefore: Polyline = Polyline.clear();
 }
