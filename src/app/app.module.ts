@@ -5,6 +5,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { NgxSvgModule } from 'ngx-svg';
 import { NgxRulerModule } from 'ngx-ruler';
@@ -36,6 +37,7 @@ import { GridComponent } from './grid/grid.component';
     MatIconModule,
     MatInputModule,
     MatButtonModule,
+    MatSnackBarModule,
     NgxSvgModule,
     NgxRulerModule
   ],

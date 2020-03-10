@@ -2,8 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DataService } from '../data.service';
 import { Polyline } from '../polyline';
 import { Frame } from '../frame';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-/* TODO: нужно понимать, какие именно линейки и в каком количестве у меня есть */
 
 @Component({
   selector: 'app-draw',
@@ -61,7 +61,7 @@ export class DrawComponent implements OnInit {
   private transparencyColorPolyline: number;
   private nFixedPolylinePoints: number; // кол-во зафиксированных точек в редактируемой полилинии
 
-  constructor( public _dataService: DataService ) { }
+  constructor( public _dataService: DataService, private _snackBar: MatSnackBar ) { }
 
   ngOnInit() {
     this.widthContent = 650;
@@ -192,7 +192,10 @@ export class DrawComponent implements OnInit {
       const indexPoint = this.getpolylinePointIndex(currentCoords, cx, cy);
       // если точка с таким индексом есть - не поставим её
       const isRepeatingPoint = (indexPoint > -1) ? true : false;
-      if (isRepeatingPoint) return;
+      if (isRepeatingPoint) {
+        this.reportError("Редактируемая линия уже проходит через эту точку");
+        return
+      };
 
       // удаляем временную точку, которая добавлялась при mouseMove
       currentCoords.pop();
@@ -214,7 +217,10 @@ export class DrawComponent implements OnInit {
     const indexPoint = this.getpolylinePointIndex(currentCoords, cx, cy);
     // если точка с таким индексом есть и она не первая - не поставим её
     const isInnerPoint = (indexPoint > 0 && indexPoint < currentCoords.length-1) ? true : false;
-    if (isInnerPoint) return;
+    if (isInnerPoint) {
+      this.reportError("Чтобы закончить линию, замкните её или выберите любую свободную точку");
+      return
+    };
 
     // удаляем временную точку, которая добавлялась при mouseMove
     currentCoords.pop();
@@ -359,6 +365,10 @@ export class DrawComponent implements OnInit {
     }
     
     this.turnOffLineDrawing();
+  }
+
+  private reportError(text) {
+    let snackBarRef = this._snackBar.open(text, '', {duration: 3000});
   }
 
   private turnOffLineDrawing() {
