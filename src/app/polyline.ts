@@ -1,9 +1,9 @@
 export class Polyline {
   id: string;
-  coords: number[][];
+  coords: [number, number][];
   color: string;
 
-  constructor(id: string, coords: number[][], color: string) {
+  constructor(id: string, coords: [number, number][], color: string) {
     this.id = id;
     this.coords = coords;
     this.color = color;
