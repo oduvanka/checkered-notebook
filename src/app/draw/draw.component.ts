@@ -61,6 +61,8 @@ export class DrawComponent implements OnInit {
   private transparencyColorPolyline: number;
   private nFixedPolylinePoints: number; // кол-во зафиксированных точек в редактируемой полилинии
 
+  private textError: string;
+
   constructor( public _dataService: DataService, private _snackBar: MatSnackBar ) { }
 
   ngOnInit() {
@@ -119,6 +121,8 @@ export class DrawComponent implements OnInit {
     this.defaultColorPolyline = "#000000";
     this.transparencyColorPolyline = 0.5;
     this.turnOffLineDrawing();
+
+    this.textError = "";
   }
 
   ngOnChanges() { }
@@ -165,6 +169,9 @@ export class DrawComponent implements OnInit {
   /* СОБЫТИЯ ТОЧКИ */
 
   onClickCircle(evt) {
+    // чтобы отследить двойной клик, перед которым будет дважды событие одинарного
+    if (evt.detail > 1) return;
+
     const currentCircle = evt.target;
     const attrСurrentCircle = currentCircle.attributes;
     const cx = attrСurrentCircle.getNamedItem('cx').value;
@@ -179,7 +186,7 @@ export class DrawComponent implements OnInit {
       const existingLine = this.polylines.find((item) => item.id === newId);
       this.turnOnLineDrawing(existingLine);
 
-      // Переместим circle в конец дочерних элементов, чтобы на холсте он оказался выше всех
+      // Переместим первый circle в конец дочерних элементов, чтобы на холсте он оказался выше всех
       let svgContainer = this.getSvgContainer();
       if (svgContainer) {
         setTimeout(() => { svgContainer.appendChild(currentCircle) }, 50)
@@ -193,7 +200,8 @@ export class DrawComponent implements OnInit {
       // если точка с таким индексом есть - не поставим её
       const isRepeatingPoint = (indexPoint > -1) ? true : false;
       if (isRepeatingPoint) {
-        this.reportError("Редактируемая линия уже проходит через эту точку");
+        this.textError = "Редактируемая линия уже проходит через эту точку";
+        setTimeout(() => { this.reportError() }, 500);
         return
       };
 
@@ -218,9 +226,10 @@ export class DrawComponent implements OnInit {
     // если точка с таким индексом есть и она не первая - не поставим её
     const isInnerPoint = (indexPoint > 0 && indexPoint < currentCoords.length-1) ? true : false;
     if (isInnerPoint) {
-      this.reportError("Чтобы закончить линию, замкните её или выберите любую свободную точку");
+      this.textError = "Закончить линию можно в её начальной точке или любой свободной";
       return
-    };
+    }
+    this.textError = "";
 
     // удаляем временную точку, которая добавлялась при mouseMove
     currentCoords.pop();
@@ -367,8 +376,9 @@ export class DrawComponent implements OnInit {
     this.turnOffLineDrawing();
   }
 
-  private reportError(text) {
-    let snackBarRef = this._snackBar.open(text, '', {duration: 3000});
+  private reportError() {
+    if (this.textError) this._snackBar.open(this.textError, '', {duration: 3000});
+    this.textError = "";
   }
 
   private turnOffLineDrawing() {
