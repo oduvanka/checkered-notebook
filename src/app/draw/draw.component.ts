@@ -200,7 +200,7 @@ export class DrawComponent implements OnInit {
       // если точка с таким индексом есть - не поставим её
       const isRepeatingPoint = (indexPoint > -1) ? true : false;
       if (isRepeatingPoint) {
-        this.textError = "Редактируемая линия уже проходит через эту точку";
+        this.textError = "Нельзя выбрать точку — линия уже проходит через неё";
         setTimeout(() => { this.reportError() }, 500);
         return
       };
@@ -226,9 +226,18 @@ export class DrawComponent implements OnInit {
     // если точка с таким индексом есть и она не первая - не поставим её
     const isInnerPoint = (indexPoint > 0 && indexPoint < currentCoords.length-1) ? true : false;
     if (isInnerPoint) {
-      this.textError = "Закончить линию можно в её начальной точке или любой свободной";
+      this.textError = "Нельзя закончить линию — нужна свободная точка или начало линии";
       return
     }
+
+    const duplicatePolyline = this.findDuplicatePolyline(this.editablePolyline);
+    const isDuplicatePolyline = (duplicatePolyline) ? true : false;
+    if (isDuplicatePolyline) {
+      this.textError = "Нельзя закончить линию — она совпадает с другой линией";
+      this.reportError();
+      return
+    }
+
     this.textError = "";
 
     // удаляем временную точку, которая добавлялась при mouseMove
@@ -361,6 +370,18 @@ export class DrawComponent implements OnInit {
     const index = coords.findIndex((item) => (item[0] === x && item[1] === y));
 
     return index;
+  }
+
+  private findDuplicatePolyline(myPolyline: Polyline) {
+    // Проверяет, есть ли такая же линия
+    const coords = myPolyline.coords;
+    const coordsReverse = [...myPolyline.coords].reverse();
+    const duplicatePolyline = this.polylines.find((item) => {
+      const strItemCoords = item.coords.join(',');
+      if (((coords.join(',') === strItemCoords) || (coordsReverse.join(',') === strItemCoords)) && (myPolyline.id !== item.id)) return true
+      else return false;
+    });
+    return duplicatePolyline;
   }
 
   private breakPolyline() {
