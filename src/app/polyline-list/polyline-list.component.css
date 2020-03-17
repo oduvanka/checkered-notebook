@@ -10,6 +10,7 @@
 
 .coords-polyline {
  flex-grow: 1;
+ flex-shrink: 0;
 }
 
 .action-polyline {

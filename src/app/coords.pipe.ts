@@ -7,7 +7,13 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class CoordsPipe implements PipeTransform {
 
   transform(arr: [][]): string {
-    let result = arr.join("; ");
+    let result = "";
+    const lengthArr = arr.length;
+    if (lengthArr <= 3) result = arr.join("; ");
+    else {
+      result = arr[0] + "; ... " + arr[lengthArr-1] + "; ";
+    }
+    
     return result;
   }
 
