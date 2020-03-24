@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { POINTS } from './mock-data/mock-points';
-import { POLYGONS } from './mock-data/mock-polygons';
+import { POINTS_YACHT } from './mock-data/mock-points';
+import { POLYGONS_YACHT } from './mock-data/mock-polygons';
 import { Polygon } from './polygon';
 import { Point } from './point';
 import { Observable, of } from 'rxjs';
@@ -11,8 +11,8 @@ import { Observable, of } from 'rxjs';
 })
 export class DataService {
 
-  private dataPoints = POINTS;
-  private dataPoligons = POLYGONS;
+  private dataPoints = POINTS_YACHT;
+  private dataPoligons = POLYGONS_YACHT;
 
   constructor() { }
 
