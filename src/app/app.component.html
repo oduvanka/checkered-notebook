@@ -1,4 +1,12 @@
 <h1 class="title">Тетрадка в клеточку: рисуем по точкам</h1>
+<mat-form-field class="settings">
+  <mat-label>Модель</mat-label>
+  <mat-select [(value)]="selectedModel">
+    <mat-option *ngFor="let model of models" [value]="model.value">
+      {{model.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
 
 <div class="content">
   <app-draw 

@@ -8,6 +8,11 @@ import { Polyline } from './polyline';
 })
 export class AppComponent {
   title = 'testDraw10';
+  models = [
+    { value: "yacht", viewValue: "Яхта" },
+    { value: "grape", viewValue: "Виноград" },
+  ];
+  selectedModel = "yacht";
 
   polylines: Polyline[] = [];
   isEditPolyLine: boolean = false;
