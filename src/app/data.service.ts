@@ -16,20 +16,24 @@ export class DataService {
   getDataModel(modelCode: number): Observable<Model> {
     const modelName = Models[modelCode];
     let dataPoints;
-    let dataPoligons;
+    let dataPolygons;
+    let dataPolylines;
 
     /* Вместо switch в реальности нужно modelName отправлять в запросе на апишку по получению данных модели */
     switch(modelCode) {
       case 0:
         dataPoints = POINTS_YACHT;
-        dataPoligons = POLYGONS_YACHT;
+        dataPolygons = POLYGONS_YACHT;
+        dataPolylines = [];
         break;
       case 1:
         dataPoints = POINTS_GRAPE;
-        dataPoligons = POLYGONS_GRAPE;
+        dataPolygons = POLYGONS_GRAPE;
+        dataPolylines = [];
         break;
     };
-    const dataModel = new Model(modelName, dataPoligons, dataPoints);
+    const dataModel = new Model(modelName, dataPolygons, dataPoints, dataPolylines);
+    
     return of(dataModel);
   }
 }

@@ -40,16 +40,18 @@ export class AppComponent {
   ngOnInit() {
     this._dataService.getDataModel(this.selectedModelNumber)
     .subscribe(dataModel => {
-      this.selectedModelPoints = dataModel.points;
       this.selectedModelPolygons = dataModel.polygons;
+      this.selectedModelPoints = dataModel.points;
+      this.selectedModelPolylines = dataModel.polylines;
     });
   }
 
   onChangeModel() {
     this._dataService.getDataModel(this.selectedModelNumber)
     .subscribe(dataModel => {
-      this.selectedModelPoints = dataModel.points;
       this.selectedModelPolygons = dataModel.polygons;
+      this.selectedModelPoints = dataModel.points;
+      this.selectedModelPolylines = dataModel.polylines;
     });
   }
 }
