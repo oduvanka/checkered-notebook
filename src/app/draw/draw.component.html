@@ -35,7 +35,7 @@
     </svg-polyline>
 
     <svg-circle
-      *ngFor="let item of points"
+      *ngFor="let item of pointsWithLabels"
       [radius]="rCircle"
       x={{item.circle.x}} y={{item.circle.y}}
       color={{item.circle.color}}
@@ -46,7 +46,7 @@
     </svg-circle>
 
     <svg-text 
-      *ngFor="let item of points"
+      *ngFor="let item of pointsWithLabels"
       text={{item.label.text}}
       x={{item.label.x}} y={{item.label.y}}
       [size]="sizeText" [color]="colorText" >

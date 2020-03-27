@@ -1,7 +1,7 @@
 <h1 class="title">Тетрадка в клеточку: рисуем по точкам</h1>
 <mat-form-field class="settings">
   <mat-label>Модель</mat-label>
-  <mat-select [(value)]="selectedModel">
+  <mat-select [(value)]="selectedModelNumber" (selectionChange)="onChangeModel()">
     <mat-option *ngFor="let model of models" [value]="model.value">
       {{model.viewValue}}
     </mat-option>
@@ -10,7 +10,9 @@
 
 <div class="content">
   <app-draw 
-    [(polylines)]="polylines"
+    [points]="selectedModelPoints"
+    [polygons]="selectedModelPolygons"  
+    [(polylines)]="selectedModelPolylines"
     [isEditLine]="isEditPolyLine" 
     [editablePolyline]="selectedPolyline" 
     [editablePolylineCopyBefore]="selectedPolylineCopyBefore"
@@ -20,7 +22,7 @@
   </app-draw>
   <app-polyline-list 
     class="polyline-list"
-    [(polylines)]="polylines" 
+    [(polylines)]="selectedModelPolylines" 
     [isEditLine]="isEditPolyLine" 
     [selectedPolyline]="selectedPolyline" 
     [selectedPolylineCopyBefore]="selectedPolylineCopyBefore"

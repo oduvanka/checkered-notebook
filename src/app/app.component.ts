@@ -1,20 +1,32 @@
 import { Component } from '@angular/core';
 import { Polyline } from './polyline';
+import { Models } from './models.enum';
+import { DataService } from './data.service';
+import { Point } from './point';
+import { Polygon } from './polygon';
+
+interface Model {
+  value: number;
+  viewValue: string;
+}
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [DataService]
 })
 export class AppComponent {
-  title = 'testDraw10';
-  models = [
-    { value: "yacht", viewValue: "Яхта" },
-    { value: "grape", viewValue: "Виноград" },
+  title: string = 'testDraw10';
+  models: Model[] = [
+    { value: Models.Yacht, viewValue: "Яхта" },
+    { value: Models.Grape, viewValue: "Виноград" },
   ];
-  selectedModel = "yacht";
 
-  polylines: Polyline[] = [];
+  selectedModelNumber: number = Models.Yacht;
+  selectedModelPoints: Point[] = [];
+  selectedModelPolygons: Polygon[] = [];
+  selectedModelPolylines: Polyline[] = [];
   isEditPolyLine: boolean = false;
 
   // ссылка на редактируемый элемент массива polylines
@@ -22,4 +34,22 @@ export class AppComponent {
 
   // копия редактируемого элемента массива, для отмены изменений
   selectedPolylineCopyBefore: Polyline = Polyline.clear();
+
+  constructor(private _dataService: DataService) {}
+
+  ngOnInit() {
+    this._dataService.getDataModel(this.selectedModelNumber)
+    .subscribe(dataModel => {
+      this.selectedModelPoints = dataModel.points;
+      this.selectedModelPolygons = dataModel.polygons;
+    });
+  }
+
+  onChangeModel() {
+    this._dataService.getDataModel(this.selectedModelNumber)
+    .subscribe(dataModel => {
+      this.selectedModelPoints = dataModel.points;
+      this.selectedModelPolygons = dataModel.polygons;
+    });
+  }
 }

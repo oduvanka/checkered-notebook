@@ -1,8 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { DataService } from '../data.service';
 import { Polyline } from '../polyline';
 import { Frame } from '../frame';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Point } from '../point';
+import { Polygon } from '../polygon';
 
 
 @Component({
@@ -41,9 +43,11 @@ export class DrawComponent implements OnInit {
   public colorText: string;
   // ломаная и многоугольник
   public borderSize: number;
-  // имеющиеся фигуры
-  public points: Object[];
-  public polygons: Object[];
+
+  // имеющиеся фигуры по исходным данным модели
+  @Input() points: Point[];
+  public pointsWithLabels: Object[];
+  @Input() polygons: Polygon[];
 
   // новые фигуры
   @Input() polylines: Polyline[];
@@ -112,11 +116,8 @@ export class DrawComponent implements OnInit {
     this.colorText = "grey";
 
     this.borderSize = 3;
-    
-    this._dataService.getDataPoints()
-      .subscribe(dataPoints => this.points = this.createArrOfPointsVsLabels(dataPoints));
-    this._dataService.getDataPolygons()
-      .subscribe(dataPolygons => this.polygons = dataPolygons);
+
+    this.pointsWithLabels = this.createArrOfPointsVsLabels(this.points);
 
     this.defaultColorPolyline = "#000000";
     this.transparencyColorPolyline = 0.5;
@@ -125,7 +126,12 @@ export class DrawComponent implements OnInit {
     this.textError = "";
   }
 
-  ngOnChanges() { }
+  ngOnChanges(changes: SimpleChanges) {
+    const isChangeModel = "points" in changes;
+    if (isChangeModel) {
+      this.pointsWithLabels = this.createArrOfPointsVsLabels(this.points);
+    }
+  }
 
   /* СОБЫТИЯ ХОЛСТА */
 
@@ -326,8 +332,8 @@ export class DrawComponent implements OnInit {
     return result
   }
 
-  private createArrOfPointsVsLabels(data: Object[]) {
-    const newData = [];
+  private createArrOfPointsVsLabels(data: Object[]): Object[] {
+    let newData = [];
     data.map((item) => {
       const id = item['id'];
       const point = item['coords'];
