@@ -20,16 +20,18 @@
       points={{item.coords}}
       fill="none"
       [borderSize]="borderSize"
-      borderColor={{item.color}} >
+      borderColor={{item.color}}
+      [classes]="stylePolygone" >
     </svg-polygon>
 
     <svg-polyline
       *ngFor="let item of polylines"
       points={{item.coords}}
       fill="none"
-      borderSize={{getPolylineBorderSize(item.id,item.color)}} 
-      borderColor={{getPolylineBorderColor(item.id,item.color)}} 
-      (clickEvent)="onClickPolyline($event)" 
+      [borderSize]="borderSize"
+      borderColor={{item.color}}
+      [classes]="setPolylineStyle(item.id)"
+      (clickEvent)="onClickPolyline($event)"
       (mouseOverEvent)="onMouseOverPolyline()"
       (mouseOutEvent)="onMouseOutPolyline()" >
     </svg-polyline>
@@ -39,6 +41,7 @@
       [radius]="rCircle"
       x={{item.circle.x}} y={{item.circle.y}}
       color={{item.circle.color}}
+      [classes]="styleCircle"
       (clickEvent)="onClickCircle($event)"
       (doubleClickEvent)="onDoubleClickCircle($event)"
       (mouseOverEvent)="onMouseOverCircle($event)"

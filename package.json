@@ -24,7 +24,7 @@
     "angular-cli-ghpages": "^0.6.2",
     "hammerjs": "^2.0.8",
     "ngx-ruler": "^0.3.0",
-    "ngx-svg": "^0.5.2",
+    "ngx-svg": "^1.0.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

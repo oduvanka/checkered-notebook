@@ -39,10 +39,14 @@ export class DrawComponent implements OnInit {
   public sizePoint: number;
   // точка с меткой
   public rCircle: number;
+  public styleCircle: string[];
   public sizeText: number;
   public colorText: string;
   // ломаная и многоугольник
   public borderSize: number;
+  public stylePolygone: string[];
+  public stylePolyline: string[];
+  public styleEditablePolyline: string[];
 
   // имеющиеся фигуры по исходным данным модели
   @Input() points: Point[];
@@ -62,7 +66,6 @@ export class DrawComponent implements OnInit {
   @Output() isEditLineToogle = new EventEmitter<boolean>();
 
   private defaultColorPolyline: string;
-  private transparencyColorPolyline: number;
   private nFixedPolylinePoints: number; // кол-во зафиксированных точек в редактируемой полилинии
 
   private textError: string;
@@ -112,15 +115,18 @@ export class DrawComponent implements OnInit {
     this.sizePoint = 0;  
     
     this.rCircle = 18;
+    this.styleCircle = ["point"];
     this.sizeText = 8;
     this.colorText = "grey";
 
     this.borderSize = 3;
+    this.stylePolygone = ["polygone"];
+    this.stylePolyline = ["polyline"];
+    this.styleEditablePolyline = ["polyline", "editable-polyline"];
 
     this.pointsWithLabels = this.createArrOfPointsVsLabels(this.points);
 
     this.defaultColorPolyline = "#000000";
-    this.transparencyColorPolyline = 0.5;
     this.turnOffLineDrawing();
 
     this.textError = "";
@@ -129,6 +135,7 @@ export class DrawComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     const isChangeModel = "points" in changes;
     if (isChangeModel) {
+      /* Перерисуем точки с метками после смены модели */
       this.pointsWithLabels = this.createArrOfPointsVsLabels(this.points);
     }
   }
@@ -160,8 +167,8 @@ export class DrawComponent implements OnInit {
     }
 
     const lastCoords = currentCoords[currentCoords.length - 1];
-    const cxEl = (evt.x < lastCoords[0]) ? evt.x+1 : evt.x-1;
-    const cyEl = (evt.y < lastCoords[1]) ? evt.y+1 : evt.y-1;
+    const cxEl = (evt.x < lastCoords[0]) ? evt.x+2 : evt.x-2;
+    const cyEl = (evt.y < lastCoords[1]) ? evt.y+2 : evt.y-2;
 
     // добавим новую временную точку
     currentCoords.push([cxEl, cyEl]);
@@ -202,7 +209,7 @@ export class DrawComponent implements OnInit {
       // продолжаем начатую polyline
       let currentCoords = this.editablePolyline.coords;
 
-      const indexPoint = this.getpolylinePointIndex(currentCoords, cx, cy);
+      const indexPoint = this.getPolylinePointIndex(currentCoords, cx, cy);
       // если точка с таким индексом есть - не поставим её
       const isRepeatingPoint = (indexPoint > -1) ? true : false;
       if (isRepeatingPoint) {
@@ -228,7 +235,7 @@ export class DrawComponent implements OnInit {
     const cy = attrСurrentCircle.getNamedItem('cy').value;
     let currentCoords = this.editablePolyline.coords;
 
-    const indexPoint = this.getpolylinePointIndex(currentCoords, cx, cy);
+    const indexPoint = this.getPolylinePointIndex(currentCoords, cx, cy);
     // если точка с таким индексом есть и она не первая - не поставим её
     const isInnerPoint = (indexPoint > 0 && indexPoint < currentCoords.length-1) ? true : false;
     if (isInnerPoint) {
@@ -270,12 +277,15 @@ export class DrawComponent implements OnInit {
   /* СОБЫТИЯ ЛИНИИ */
 
   onClickPolyline(evt) {
-    if (this.isEditLine) this.breakPolyline();
-
     const polyline = evt.target;
     const attr = polyline.attributes;
     const points = attr.getNamedItem("points");
     const strPoints = points.value;
+
+    if (this.isEditLine) {
+      if (this.editablePolyline.coords.join(',') === strPoints) return;
+      this.breakPolyline();
+    }
 
     const currentLine = this.polylines.find((item) => strPoints === item.coords.join(','));
 
@@ -298,38 +308,12 @@ export class DrawComponent implements OnInit {
 
   /* ПРОЧИЕ ФУНКЦИИ */
 
-  public getPolylineBorderSize(id: string, hex: string):number {
-    // Если рисуется редактируемая линия - для неё вернётся более толстая граница
-    const result = (this.isEditLine && id === this.editablePolyline.id) ? this.borderSize + 2 : this.borderSize;
-
+  public setPolylineStyle(id: string): string[] {
+    // Если рисуется редактируемая линия - для неё нужны доп.стили,
+    // потому что пока не смогла решить это псевдоселекторами в css
+    const result = (this.isEditLine && id === this.editablePolyline.id) ? this.styleEditablePolyline : this.stylePolyline;
+    
     return result;
-  }
-
-  public getPolylineBorderColor(id: string, hex: string):string {
-    // Если рисуется редактируемая линия - для неё вернётся цвет без прозрачности
-    const result = (this.isEditLine && id === this.editablePolyline.id) ? hex : this.convertRgbToStrRgba(hex);
-
-    return result;
-  }
-
-  private convertHexToRgb(hex: string) {
-    const regexp = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    const result = regexp ? {
-      r: parseInt(regexp[1], 16),
-      g: parseInt(regexp[2], 16),
-      b: parseInt(regexp[3], 16)
-    } : null;
-
-    return result
-  }
-
-  private convertRgbToStrRgba(hex: string):string {
-    // Так как для svg не удаётся пока что задать стили, 
-    // то в html-шаблонe сделаем polyline прозрачной с помощью rgba-цвета
-    const rgb = this.convertHexToRgb(hex);
-    const result = rgb ? "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + this.transparencyColorPolyline + ")" : hex;
-
-    return result
   }
 
   private createArrOfPointsVsLabels(data: Object[]): Object[] {
@@ -371,7 +355,7 @@ export class DrawComponent implements OnInit {
     return svgContainer;
   }
 
-  private getpolylinePointIndex(coords: number[][], x: number, y: number) {
+  private getPolylinePointIndex(coords: number[][], x: number, y: number) {
     // Проверяет вхождение точки в заданный массив точек
     const index = coords.findIndex((item) => (item[0] === x && item[1] === y));
 

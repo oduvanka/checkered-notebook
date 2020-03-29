@@ -1,13 +1,27 @@
-.test1 {
-  stroke: black;
-  stroke-width: 3;
+::ng-deep .point {
+  fill-opacity: 0.75;
 }
 
-.test1:focus {
-  stroke: red;
-  stroke-width: 3;
+::ng-deep .point:hover {
+  fill-opacity: 1;
 }
 
-.test2 {
-  fill-opacity: 0.5;
+::ng-deep .polygone {
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+::ng-deep .polyline {
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-opacity: 0.5;
+}
+
+::ng-deep .polyline:hover {
+  stroke-opacity: 1;
+}
+
+::ng-deep .editable-polyline {
+  stroke-width: 5;
+  stroke-opacity: 1;
 }
