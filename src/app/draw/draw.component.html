@@ -2,7 +2,7 @@
 
   <app-frame [ngStyle]="styleFrame" [widht]="widthFrame" [height]="heightFrame" [borders]="rulers" [zoom]="zoom"></app-frame>
 
-  <app-grid [ngStyle]="styleGrid" [width]="widthGrid" [height]="heightGrid"></app-grid>
+  <!--<app-grid [ngStyle]="styleGrid" [width]="widthGrid" [height]="heightGrid"></app-grid>-->
 
   <svg-container
     containerId="svg-element"
@@ -10,6 +10,7 @@
     [showGrid]="isShowGrid"
     [hoverable]="isHoverable"
     [pointSize]="sizePoint"
+    [viewBox]="viewBoxCanvas"
     (clickEvent)="onClick($event)"
     (doubleClickEvent)="onDoubleClick($event)"
     (mouseMoveEvent)="onMouseMove($event)"

@@ -39,6 +39,7 @@ export class DrawComponent implements OnInit {
   public isShowGrid: boolean;
   public isHoverable: boolean;
   public sizePoint: number;
+  public viewBoxCanvas: [number, number, number, number];
   // точка с меткой
   public rCircle: number;
   public styleCircle: string[];
@@ -53,6 +54,8 @@ export class DrawComponent implements OnInit {
   // имеющиеся фигуры по исходным данным модели
   @Input() points: Point[];
   public pointsWithLabels: Object[];
+  private realModelWidth: number;
+  private realModelHeight: number;
   @Input() polygons: Polygon[];
 
   // новые фигуры
@@ -110,12 +113,12 @@ export class DrawComponent implements OnInit {
 
     this.widthCanvas = this.widthContent - this.rulers.vl - this.rulers.vr;
     this.heightCanvas = this.heightContent - this.rulers.ht - this.rulers.hb;
-    this.isShowGrid = false;
+    this.isShowGrid = true;
     // isHoverable
     // false - нет события клика по холсту, 
     // true - нет события клика любого эл-та, т.к. sizePoint (даже = 0) как бы перекрывает эл-т
     this.isHoverable = true;
-    this.sizePoint = 0;  
+    this.sizePoint = 0;
     
     this.rCircle = 18;
     this.styleCircle = ["point"];
@@ -128,7 +131,9 @@ export class DrawComponent implements OnInit {
     this.styleEditablePolyline = ["polyline", "editable-polyline"];
 
     this.pointsWithLabels = this.createArrOfPointsVsLabels(this.points);
-    this.zoom = this.setZoomRulers(this.points, this.widthCanvas, this.heightCanvas, this.rCircle);
+    this.setRealModelSize();
+    this.viewBoxCanvas = [0, 0, this.realModelWidth, this.realModelHeight];
+    this.setZoomRulers(this.widthCanvas, this.heightCanvas, this.realModelWidth, this.realModelHeight);
 
     this.defaultColorPolyline = "#000000";
     this.turnOffLineDrawing();
@@ -141,7 +146,9 @@ export class DrawComponent implements OnInit {
     if (isChangeModel) {
       /* Перерисуем точки с метками после смены модели */
       this.pointsWithLabels = this.createArrOfPointsVsLabels(this.points);
-      this.zoom = this.setZoomRulers(this.points, this.widthCanvas, this.heightCanvas, this.rCircle);
+      this.setRealModelSize();
+      this.viewBoxCanvas = [0, 0, this.realModelWidth, this.realModelHeight];
+      this.setZoomRulers(this.widthCanvas, this.heightCanvas, this.realModelWidth, this.realModelHeight);
     }
   }
 
@@ -348,14 +355,12 @@ export class DrawComponent implements OnInit {
     return newData;
   }
 
-  private setZoomRulers(arrPoints: Point[], maxWidth: number, maxHeight: number, padding: number): number {
-    /* Надо масштабироваться, чтобы точки заполняли всю область просмотра и не вылезали за её пределы */
-    let zoom = 1;
+  private findMaxPoint(arrPoints: Point[]): [number, number] {
+    /* Ищет самую дальнюю (по x) и самую нижнюю (по y) точки в модели */
+
     let xCoordMax = 0;
     let yCoordMax = 0;
 
-    // в массиве точек найдём точки с самыми большими координатами
-    // это будет самая дальняя (по x) и самая нижняя (по y) точки
     arrPoints.map((item) => {
       const xCoord = item.coords.x;
       const yCoord = item.coords.y;
@@ -363,11 +368,27 @@ export class DrawComponent implements OnInit {
       if (yCoord > yCoordMax) yCoordMax = yCoord;
     });
 
-    // с учтом радиуса точек узнаем, какая в идеале нужна область просмотра
-    const realWidth = xCoordMax + padding;
-    const realHeight = yCoordMax + padding;
-    console.log("widthCanvas ", realWidth, " realWidth ", realWidth);
-    console.log("heightCanvas", maxHeight, " realHeight ", realHeight);
+    return [xCoordMax, yCoordMax];
+  }
+
+  private getRealModelSize(arrPoints: Point[], padding: number): [number, number] {
+    /* Вычисляет, какая в идеале нужна область просмотра, чтобы модель с отступами поместилась */
+    const maxCoords = this.findMaxPoint(arrPoints);
+    const realWidth = maxCoords[0] + padding;
+    const realHeight = maxCoords[1] + padding;
+
+    return [realWidth, realHeight];
+  }
+
+  private setRealModelSize() {
+    const realModelSize = this.getRealModelSize(this.points, this.rCircle);
+    this.realModelWidth = realModelSize[0];
+    this.realModelHeight = realModelSize[1];
+  }
+
+  private setZoomRulers(maxWidth: number, maxHeight: number, realWidth: number, realHeight: number) {
+    /* Вычисляет масштаб для линейки, который соответствует отмасштабированной модели */
+    this.zoom = 1;
 
     // вычислим, насколько желаемая область отличается от имеющейся
     const deltaX = maxWidth - realWidth;
@@ -381,18 +402,14 @@ export class DrawComponent implements OnInit {
     5) изображение не влезает только по y - уменьшить масштаб
     6) изображение не влезает по x и y - ищем какой размер больший - уменьшить масштаб чтобы влез больший размер */
 
-    if ((deltaX  > padding) || (deltaY > padding)) {
-      // если модель такая, что на холсте есть свободное место ещё для одной или более точек
-      zoom = (deltaX > deltaY) ? ( maxWidth/realWidth ) : ( maxHeight/realHeight );
+    if ((deltaX  > 0) || (deltaY > 0)) {
+      // если модель такая, что на холсте есть свободное место
+      this.zoom = (deltaX > deltaY) ? ( maxWidth/realWidth ) : ( maxHeight/realHeight );
     }
     else if ((deltaX < 0) || (deltaY < 0)) {
       // если модель такая, что хотя бы одной стороной не влезает на холст
-      zoom = (deltaX < deltaY) ? ( maxWidth/realWidth ) : ( maxHeight/realHeight );
+      this.zoom = (deltaX < deltaY) ? ( maxWidth/realWidth ) : ( maxHeight/realHeight );
     }
-
-    console.log("zoom: ", zoom);
-    
-    return zoom;
   }
 
   private getSvgContainer() {
