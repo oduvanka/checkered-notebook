@@ -3,7 +3,7 @@ import { NgxRulerComponent, NgxRulerService } from 'ngx-ruler';
 import { Frame } from '../frame';
 
 @Component({
-  selector: 'app-rulers',
+  selector: 'app-frame',
   templateUrl: './frame.component.html',
   styleUrls: ['./frame.component.css']
 })
@@ -17,6 +17,7 @@ export class FrameComponent implements OnInit {
   @Input() widht: number;
   @Input() height: number;
   @Input() borders: Frame;
+  @Input() zoom: number;
 
   public containerStyle: Object;
 

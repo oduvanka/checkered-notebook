@@ -26,6 +26,7 @@ export class DrawComponent implements OnInit {
   public widthFrame: number;
   public heightFrame: number;
   public styleFrame: Object;
+  public zoom: number;
 
   // сетка
   public widthGrid: number;
@@ -33,6 +34,7 @@ export class DrawComponent implements OnInit {
   public styleGrid: Object;
 
   // холст
+  private widthCanvas: number;
   public heightCanvas: number;
   public isShowGrid: boolean;
   public isHoverable: boolean;
@@ -70,7 +72,7 @@ export class DrawComponent implements OnInit {
 
   private textError: string;
 
-  constructor( public _dataService: DataService, private _snackBar: MatSnackBar ) { }
+  constructor( private _snackBar: MatSnackBar ) { }
 
   ngOnInit() {
     this.widthContent = 650;
@@ -106,6 +108,7 @@ export class DrawComponent implements OnInit {
       'left': pxLeftGrid,
     }
 
+    this.widthCanvas = this.widthContent - this.rulers.vl - this.rulers.vr;
     this.heightCanvas = this.heightContent - this.rulers.ht - this.rulers.hb;
     this.isShowGrid = false;
     // isHoverable
@@ -125,6 +128,7 @@ export class DrawComponent implements OnInit {
     this.styleEditablePolyline = ["polyline", "editable-polyline"];
 
     this.pointsWithLabels = this.createArrOfPointsVsLabels(this.points);
+    this.zoom = this.setZoomRulers(this.points, this.widthCanvas, this.heightCanvas, this.rCircle);
 
     this.defaultColorPolyline = "#000000";
     this.turnOffLineDrawing();
@@ -137,6 +141,7 @@ export class DrawComponent implements OnInit {
     if (isChangeModel) {
       /* Перерисуем точки с метками после смены модели */
       this.pointsWithLabels = this.createArrOfPointsVsLabels(this.points);
+      this.zoom = this.setZoomRulers(this.points, this.widthCanvas, this.heightCanvas, this.rCircle);
     }
   }
 
@@ -341,6 +346,53 @@ export class DrawComponent implements OnInit {
     });
 
     return newData;
+  }
+
+  private setZoomRulers(arrPoints: Point[], maxWidth: number, maxHeight: number, padding: number): number {
+    /* Надо масштабироваться, чтобы точки заполняли всю область просмотра и не вылезали за её пределы */
+    let zoom = 1;
+    let xCoordMax = 0;
+    let yCoordMax = 0;
+
+    // в массиве точек найдём точки с самыми большими координатами
+    // это будет самая дальняя (по x) и самая нижняя (по y) точки
+    arrPoints.map((item) => {
+      const xCoord = item.coords.x;
+      const yCoord = item.coords.y;
+      if (xCoord > xCoordMax) xCoordMax = xCoord;
+      if (yCoord > yCoordMax) yCoordMax = yCoord;
+    });
+
+    // с учтом радиуса точек узнаем, какая в идеале нужна область просмотра
+    const realWidth = xCoordMax + padding;
+    const realHeight = yCoordMax + padding;
+    console.log("widthCanvas ", realWidth, " realWidth ", realWidth);
+    console.log("heightCanvas", maxHeight, " realHeight ", realHeight);
+
+    // вычислим, насколько желаемая область отличается от имеющейся
+    const deltaX = maxWidth - realWidth;
+    const deltaY = maxHeight - realHeight;
+
+    /* У нас могут быть варианты:
+    1) изображение намного меньше области по x и y - ищем какой размер больший - увеличить масштаб чтобы влез больший размер
+    2) изображение занимает всю x и часть y- ничего не делать
+    3) изображение занимает часть x и всю y- ничего не делать
+    4) изображение не влезает только по x - уменьшить масштаб
+    5) изображение не влезает только по y - уменьшить масштаб
+    6) изображение не влезает по x и y - ищем какой размер больший - уменьшить масштаб чтобы влез больший размер */
+
+    if ((deltaX  > padding) || (deltaY > padding)) {
+      // если модель такая, что на холсте есть свободное место ещё для одной или более точек
+      zoom = (deltaX > deltaY) ? ( maxWidth/realWidth ) : ( maxHeight/realHeight );
+    }
+    else if ((deltaX < 0) || (deltaY < 0)) {
+      // если модель такая, что хотя бы одной стороной не влезает на холст
+      zoom = (deltaX < deltaY) ? ( maxWidth/realWidth ) : ( maxHeight/realHeight );
+    }
+
+    console.log("zoom: ", zoom);
+    
+    return zoom;
   }
 
   private getSvgContainer() {
